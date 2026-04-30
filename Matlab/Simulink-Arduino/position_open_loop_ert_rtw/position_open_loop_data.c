@@ -1,0 +1,135 @@
+/*
+ * position_open_loop_data.c
+ *
+ * Code generation for model "position_open_loop".
+ *
+ * Model version              : 1.113
+ * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
+ * C source code generated on : Wed Apr 22 10:45:04 2026
+ *
+ * Target selection: ert.tlc
+ * Note: GRT includes extra infrastructure and instrumentation for prototyping
+ * Embedded hardware selection: Atmel->AVR
+ * Code generation objectives: Unspecified
+ * Validation result: Not run
+ */
+
+#include "position_open_loop.h"
+
+/* Block parameters (default storage) */
+P_position_open_loop_T position_open_loop_P = {
+  /* Mask Parameter: PIDController_D
+   * Referenced by: '<S31>/Derivative Gain'
+   */
+  0.0,
+
+  /* Mask Parameter: PIDController_I
+   * Referenced by: '<S34>/Integral Gain'
+   */
+  0.001,
+
+  /* Mask Parameter: PIDController_InitialConditionF
+   * Referenced by: '<S32>/Filter'
+   */
+  0.0,
+
+  /* Mask Parameter: PIDController_InitialConditio_f
+   * Referenced by: '<S37>/Integrator'
+   */
+  0.0,
+
+  /* Mask Parameter: PIDController_N
+   * Referenced by: '<S40>/Filter Coefficient'
+   */
+  100.0,
+
+  /* Mask Parameter: PIDController_P
+   * Referenced by: '<S42>/Proportional Gain'
+   */
+  0.01,
+
+  /* Expression: 0.01
+   * Referenced by: '<S3>/Encoder'
+   */
+  0.01,
+
+  /* Expression: 0
+   * Referenced by: '<S4>/Constant2'
+   */
+  0.0,
+
+  /* Expression: 1
+   * Referenced by: '<S4>/Constant1'
+   */
+  1.0,
+
+  /* Expression: 1
+   * Referenced by: '<S4>/Constant5'
+   */
+  1.0,
+
+  /* Expression: 0
+   * Referenced by: '<S4>/Constant4'
+   */
+  0.0,
+
+  /* Expression: 90
+   * Referenced by: '<Root>/Azimut'
+   */
+  90.0,
+
+  /* Expression: 0
+   * Referenced by: '<Root>/Azimut'
+   */
+  0.0,
+
+  /* Expression: pi
+   * Referenced by: '<Root>/Azimut'
+   */
+  3.1415926535897931,
+
+  /* Expression: 0
+   * Referenced by: '<Root>/Azimut'
+   */
+  0.0,
+
+  /* Computed Parameter: Integrator_gainval
+   * Referenced by: '<S37>/Integrator'
+   */
+  0.01,
+
+  /* Computed Parameter: Filter_gainval
+   * Referenced by: '<S32>/Filter'
+   */
+  0.01,
+
+  /* Expression: 255
+   * Referenced by: '<Root>/Gain'
+   */
+  255.0,
+
+  /* Expression: 255
+   * Referenced by: '<Root>/Saturation'
+   */
+  255.0,
+
+  /* Expression: -255
+   * Referenced by: '<Root>/Saturation'
+   */
+  -255.0,
+
+  /* Expression: 0
+   * Referenced by: '<S4>/Switch'
+   */
+  0.0,
+
+  /* Expression: 180/pi
+   * Referenced by: '<S1>/rad//s To RPM1'
+   */
+  57.295779513082323,
+
+  /* Computed Parameter: Gear_Ratio_Gain
+   * Referenced by: '<S3>/Gear_Ratio'
+   */
+  1277447357
+};
