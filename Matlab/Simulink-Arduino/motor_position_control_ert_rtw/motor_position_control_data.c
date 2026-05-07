@@ -3,9 +3,9 @@
  *
  * Code generation for model "motor_position_control".
  *
- * Model version              : 1.118
- * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Wed Apr 22 10:53:50 2026
+ * Model version              : 1.119
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Sun May  3 23:07:59 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -19,37 +19,32 @@
 /* Block parameters (default storage) */
 P_motor_position_control_T motor_position_control_P = {
   /* Mask Parameter: PIDController_D
-   * Referenced by: '<S31>/Derivative Gain'
+   * Referenced by: '<S33>/Derivative Gain'
    */
   0.0,
 
   /* Mask Parameter: PIDController_I
-   * Referenced by: '<S34>/Integral Gain'
+   * Referenced by: '<S37>/Integral Gain'
    */
   0.001,
 
   /* Mask Parameter: PIDController_InitialConditionF
-   * Referenced by: '<S32>/Filter'
+   * Referenced by: '<S35>/Filter'
    */
   0.0,
 
   /* Mask Parameter: PIDController_InitialConditio_f
-   * Referenced by: '<S37>/Integrator'
+   * Referenced by: '<S40>/Integrator'
    */
   0.0,
 
   /* Mask Parameter: PIDController_N
-   * Referenced by: '<S40>/Filter Coefficient'
+   * Referenced by: '<S43>/Filter Coefficient'
    */
   100.0,
 
   /* Mask Parameter: PIDController_P
-   * Referenced by: '<S42>/Proportional Gain'
-   */
-  0.01,
-
-  /* Expression: 0.01
-   * Referenced by: '<S3>/Encoder'
+   * Referenced by: '<S45>/Proportional Gain'
    */
   0.01,
 
@@ -94,12 +89,12 @@ P_motor_position_control_T motor_position_control_P = {
   0.0,
 
   /* Computed Parameter: Integrator_gainval
-   * Referenced by: '<S37>/Integrator'
+   * Referenced by: '<S40>/Integrator'
    */
   0.01,
 
   /* Computed Parameter: Filter_gainval
-   * Referenced by: '<S32>/Filter'
+   * Referenced by: '<S35>/Filter'
    */
   0.01,
 

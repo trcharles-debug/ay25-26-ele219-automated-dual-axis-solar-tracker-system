@@ -3,13 +3,12 @@
  *
  * Code generation for model "arduino_motor_encoder_open_loop".
  *
- * Model version              : 1.96
- * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Wed Apr 22 20:11:51 2026
+ * Model version              : 3.7
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Tue May  5 22:26:30 2026
  *
  * Target selection: ert.tlc
- * Note: GRT includes extra infrastructure and instrumentation for prototyping
- * Embedded hardware selection: Atmel->AVR
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
@@ -25,7 +24,7 @@ typedef uint16_T extmodeEventId_T;
 typedef uint32_T extmodeRealTime_T;
 
 /** External Mode simulation time */
-typedef uint32_T extmodeSimulationTime_T;
+typedef time_T extmodeSimulationTime_T;
 
 /** External Mode double data type */
 typedef real_T extmodeDouble_T;
@@ -39,17 +38,8 @@ typedef real_T extmodeClassicTriggerSignal_T;
 /* Define max value of 32-bit unsigned type */
 #define XCP_UINT32_MAX                 0xFFFFFFFFU
 
-/** External Mode MAX simulation time */
-#define MAX_extmodeSimulationTime_T    XCP_UINT32_MAX
-
-/** External Mode MAX base rate simulation time */
-#define EXTMODE_MAX_BASE_RATE_SIMULATION_TIME XCP_UINT32_MAX
-
-/** External Mode Step Size in microseconds */
-#define EXTMODE_STEP_SIZE_IN_MICROSECONDS 10000
-
 /** External Mode Base rate event id */
-#define EXTMODE_BASE_RATE_EVENT_ID     1
+#define EXTMODE_BASE_RATE_EVENT_ID     0
 
 /** External Mode Max Event Id */
 #define EXTMODE_MAX_EVENT_ID           0xFF

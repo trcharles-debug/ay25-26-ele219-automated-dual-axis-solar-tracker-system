@@ -3,9 +3,9 @@
  *
  * Code generation for model "Tracker_with_Position_Control".
  *
- * Model version              : 1.110
- * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Thu Apr 23 11:36:32 2026
+ * Model version              : 3.0
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Tue May  5 22:49:03 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -14,8 +14,8 @@
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_rt_nonfinite_h_
-#define RTW_HEADER_rt_nonfinite_h_
+#ifndef rt_nonfinite_h_
+#define rt_nonfinite_h_
 #include <stddef.h>
 #include "rtwtypes.h"
 #define NOT_USING_NONFINITE_LITERALS   1
@@ -52,4 +52,4 @@ typedef struct {
   } wordL;
 } IEEESingle;
 
-#endif                                 /* RTW_HEADER_rt_nonfinite_h_ */
+#endif                                 /* rt_nonfinite_h_ */

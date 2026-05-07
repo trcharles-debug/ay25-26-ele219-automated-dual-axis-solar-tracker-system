@@ -1,0 +1,182 @@
+%implements s6_b0_0bopg_Outputs "C"
+
+%function OutputsForTID(block, system, tid) Output
+%if tid == 0
+%assign ::GlobalCurrentTID = 0
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%<SLibGenerateExtModeOutput(system)>
+%<SLibInsertSolverResetCode()>\
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutput0LocalVars", localVarDecl)>
+%assign ::GlobalCurrentTID = []
+%endif
+%if tid == 1
+%assign ::GlobalCurrentTID = 1
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%openfile localVarDecl
+
+int64m_T tmp;
+real_T rtb_FilterCoefficient;
+real_T rtb_Saturation;
+real_T rtb_Switch_idx_0;
+real_T rtb_Switch_idx_1;
+int32_T rtb_Encoder_0;
+uint32_T tmp_0;
+uint32_T tmp_1;
+uint8_T tmp_2;
+%closefile localVarDecl
+%assign tlcOutputsFcnOfS6B6 = OpaqueTLCBlockFcn("Outputs", 6, 6, 0, 4, 0)
+%assign tlcOutputsFcnOfS6B7 = OpaqueTLCBlockFcn("Outputs", 6, 7, 0, 4, 1)
+%assign tlcOutputsFcnOfS6B8 = OpaqueTLCBlockFcn("Outputs", 6, 8, 0, 4, 2)
+%assign tlcOutputsFcnOfS6B9 = OpaqueTLCBlockFcn("Outputs", 6, 9, 0, 4, 3)
+/* {S!d1882}Gain: '<S5>/Gain' */
+Tracker_with_Position_Control_B.Gain = Tracker_with_Position_Control_P.Gain_Gain_j;
+/* {S!d1884}Constant: '<Root>/Constant' */
+Tracker_with_Position_Control_B.Constant = Tracker_with_Position_Control_P.Constant_Value;
+/* {S!d1886}MATLABSystem: '<S3>/Encoder' */
+if (Tracker_with_Position_Contro_DW.obj.TunablePropsChanged) {
+    Tracker_with_Position_Contro_DW.obj.TunablePropsChanged = false;
+}
+MW_EncoderRead(Tracker_with_Position_Contro_DW.obj.Index, &rtb_Encoder_0);
+/* {S!d1888}Gain: '<S3>/Gear_Ratio' incorporates:
+ *  MATLABSystem: '<S3>/Encoder'
+ */
+tmp_0 = (uint32_T)Tracker_with_Position_Control_P.Gear_Ratio_Gain;
+tmp_1 = (uint32_T)rtb_Encoder_0;
+sMultiWordMul(&tmp_0, 1, &tmp_1, 1, &tmp.chunks[0U], 2);
+/* {S!d1890}Gain: '<S5>/Gain' */
+sMultiWordMul(&Tracker_with_Position_Control_P.Gain_Gain_j.chunks[0U], 2, &tmp.chunks[0U], 2, &Tracker_with_Position_Control_B.r1.chunks[0U], 4);
+sMultiWordShr(&Tracker_with_Position_Control_B.r1.chunks[0U], 4, 41U, &Tracker_with_Position_Control_B.r.chunks[0U], 4);
+sMultiWord2sMultiWordSat(&Tracker_with_Position_Control_B.r.chunks[0U], 4, &Tracker_with_Position_Control_B.Gain.chunks[0U], 2);
+/* {S!d1892}Sum: '<Root>/Sum' incorporates:
+ *  Gain: '<S5>/Gain'
+ */
+Tracker_with_Position_Control_B.Sum = Tracker_with_Position_Control_B.Constant - sMultiWord2Double(&Tracker_with_Position_Control_B.Gain.chunks[0U], 2, 0) * 4.5474735088646412E-13;
+/* {S!d1894}Gain: '<S44>/Filter Coefficient' incorporates:
+ *  DiscreteIntegrator: '<S36>/Filter'
+ *  Gain: '<S34>/Derivative Gain'
+ *  Sum: '<S36>/SumD'
+ */
+rtb_FilterCoefficient = (Tracker_with_Position_Control_P.PIDController_D * Tracker_with_Position_Control_B.Sum - Tracker_with_Position_Contro_DW.Filter_DSTATE) * Tracker_with_Position_Control_P.PIDController_N;
+/* {S!d1896}Gain: '<Root>/Gain' incorporates:
+ *  DiscreteIntegrator: '<S41>/Integrator'
+ *  Gain: '<S46>/Proportional Gain'
+ *  Sum: '<S50>/Sum'
+ */
+rtb_Saturation = ((Tracker_with_Position_Control_P.PIDController_P * Tracker_with_Position_Control_B.Sum + Tracker_with_Position_Contro_DW.Integrator_DSTATE) + rtb_FilterCoefficient) * Tracker_with_Position_Control_P.Gain_Gain;
+/* {S!d1898}Saturate: '<Root>/Saturation' */
+if (rtb_Saturation > Tracker_with_Position_Control_P.Saturation_UpperSat) {
+    rtb_Saturation = Tracker_with_Position_Control_P.Saturation_UpperSat;
+} else if (rtb_Saturation < Tracker_with_Position_Control_P.Saturation_LowerSat) {
+    rtb_Saturation = Tracker_with_Position_Control_P.Saturation_LowerSat;
+}
+/* {E!d1898}End of Saturate: '<Root>/Saturation' */
+
+/* {S!d1900}Switch: '<S4>/Switch' incorporates:
+ *  Constant: '<S4>/Constant1'
+ *  Constant: '<S4>/Constant2'
+ *  Constant: '<S4>/Constant4'
+ *  Constant: '<S4>/Constant5'
+ */
+if (rtb_Saturation > Tracker_with_Position_Control_P.Switch_Threshold) {
+    rtb_Switch_idx_0 = Tracker_with_Position_Control_P.Constant2_Value;
+    rtb_Switch_idx_1 = Tracker_with_Position_Control_P.Constant1_Value;
+} else {
+    rtb_Switch_idx_0 = Tracker_with_Position_Control_P.Constant5_Value;
+    rtb_Switch_idx_1 = Tracker_with_Position_Control_P.Constant4_Value;
+}
+/* {E!d1900}End of Switch: '<S4>/Switch' */
+
+/* {S!d1902}MATLABSystem: '<S4>/IN1' */
+rtb_Switch_idx_0 = %<(SLibCGCallSubFcn("rt_roundd_snf", ["rtb_Switch_idx_0"], 0, 4, 1))>;
+if (rtb_Switch_idx_0 < 256.0) {
+    if (rtb_Switch_idx_0 >= 0.0) {
+        tmp_2 = (uint8_T)rtb_Switch_idx_0;
+    } else {
+        tmp_2 = 0U;
+    }
+} else {
+    tmp_2 = MAX_uint8_T;
+}
+writeDigitalPin(7, tmp_2);
+/* {E!d1902}End of MATLABSystem: '<S4>/IN1' */
+
+/* {S!d1904}MATLABSystem: '<S4>/IN2' */
+rtb_Switch_idx_0 = %<(SLibCGCallSubFcn("rt_roundd_snf", ["rtb_Switch_idx_1"], 0, 4, 0))>;
+if (rtb_Switch_idx_0 < 256.0) {
+    if (rtb_Switch_idx_0 >= 0.0) {
+        tmp_2 = (uint8_T)rtb_Switch_idx_0;
+    } else {
+        tmp_2 = 0U;
+    }
+} else {
+    tmp_2 = MAX_uint8_T;
+}
+writeDigitalPin(8, tmp_2);
+/* {E!d1904}End of MATLABSystem: '<S4>/IN2' */
+
+/* {S!d1906}MATLABSystem: '<S4>/ENA1' */
+Tracker_with_Position_Contro_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE = MW_PWM_GetHandle(6UL);
+/* {S!d1908}Abs: '<S4>/Abs' */
+rtb_Saturation = fabs(rtb_Saturation);
+/* {S!d1910}Start for MATLABSystem: '<S4>/ENA1' */
+if (!(rtb_Saturation <= 255.0)) {
+    rtb_Saturation = 255.0;
+}
+/* {S!d1912}MATLABSystem: '<S4>/ENA1' */
+MW_PWM_SetDutyCycle(Tracker_with_Position_Contro_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE, rtb_Saturation);
+%if !WHITE_SPACE(tlcOutputsFcnOfS6B6)
+/* {S!d1914}Scope: '<Root>/Scope' */
+%<tlcOutputsFcnOfS6B6>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS6B7)
+/* {S!d1916}ToAsyncQueueBlock generated from: '<Root>/Sum' */
+%<tlcOutputsFcnOfS6B7>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS6B8)
+/* {S!d1918}ToAsyncQueueBlock generated from: '<Root>/Azimuth Motor' */
+%<tlcOutputsFcnOfS6B8>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS6B9)
+/* {S!d1920}ToAsyncQueueBlock generated from: '<Root>/Constant' */
+%<tlcOutputsFcnOfS6B9>\
+%endif
+/* {S!d1922}Update for DiscreteIntegrator: '<S41>/Integrator' incorporates:
+ *  Gain: '<S38>/Integral Gain'
+ */
+Tracker_with_Position_Contro_DW.Integrator_DSTATE += Tracker_with_Position_Control_P.PIDController_I * Tracker_with_Position_Control_B.Sum * Tracker_with_Position_Control_P.Integrator_gainval;
+/* {S!d1924}Update for DiscreteIntegrator: '<S36>/Filter' */
+Tracker_with_Position_Contro_DW.Filter_DSTATE += Tracker_with_Position_Control_P.Filter_gainval * rtb_FilterCoefficient;
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutput1LocalVars", localVarDecl)>
+%assign ::GlobalCurrentTID = []
+%endif
+%endfunction
+%function OutputsFcnProtoTypeForTID(block, system, tid) Output
+%if tid == 0
+%assign ::GlobalCurrentTID = 0
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Outputs0(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 3, fcnProtoType)>
+%assign ::GlobalCurrentTID = []
+%endif
+%if tid == 1
+%assign ::GlobalCurrentTID = 1
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Outputs1(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 4, fcnProtoType)>
+%assign ::GlobalCurrentTID = []
+%endif
+%endfunction

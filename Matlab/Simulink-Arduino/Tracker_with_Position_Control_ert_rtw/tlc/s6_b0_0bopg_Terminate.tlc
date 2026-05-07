@@ -1,0 +1,80 @@
+%implements s6_b0_0bopg_Terminate "C"
+
+%function Terminate(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcTerminateFcnOfS6B7 = OpaqueTLCBlockFcn("Terminate", 6, 7, 0, 5, 0)
+%assign tlcTerminateFcnOfS6B8 = OpaqueTLCBlockFcn("Terminate", 6, 8, 0, 5, 1)
+%assign tlcTerminateFcnOfS6B9 = OpaqueTLCBlockFcn("Terminate", 6, 9, 0, 5, 2)
+%assign tlcCleanupRuntimeResourcesFcnOfS6B7 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 6, 7, 0, 5, 3)
+%assign tlcCleanupRuntimeResourcesFcnOfS6B8 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 6, 8, 0, 5, 4)
+%assign tlcCleanupRuntimeResourcesFcnOfS6B9 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 6, 9, 0, 5, 5)
+/* {S!d1926}Terminate for MATLABSystem: '<S3>/Encoder' */
+if (!Tracker_with_Position_Contro_DW.obj.matlabCodegenIsDeleted) {
+    Tracker_with_Position_Contro_DW.obj.matlabCodegenIsDeleted = true;
+    if ((Tracker_with_Position_Contro_DW.obj.isInitialized == 1L) && Tracker_with_Position_Contro_DW.obj.isSetupComplete) {
+        MW_EncoderRelease();
+    }
+}
+/* {E!d1926}End of Terminate for MATLABSystem: '<S3>/Encoder' */
+
+/* {S!d1928}Terminate for MATLABSystem: '<S4>/IN1' */
+if (!Tracker_with_Position_Contro_DW.obj_e.matlabCodegenIsDeleted) {
+    Tracker_with_Position_Contro_DW.obj_e.matlabCodegenIsDeleted = true;
+}
+/* {E!d1928}End of Terminate for MATLABSystem: '<S4>/IN1' */
+
+/* {S!d1930}Terminate for MATLABSystem: '<S4>/IN2' */
+if (!Tracker_with_Position_Contro_DW.obj_d.matlabCodegenIsDeleted) {
+    Tracker_with_Position_Contro_DW.obj_d.matlabCodegenIsDeleted = true;
+}
+/* {E!d1930}End of Terminate for MATLABSystem: '<S4>/IN2' */
+
+/* {S!d1932}Terminate for MATLABSystem: '<S4>/ENA1' */
+if (!Tracker_with_Position_Contro_DW.obj_g.matlabCodegenIsDeleted) {
+    Tracker_with_Position_Contro_DW.obj_g.matlabCodegenIsDeleted = true;
+    if ((Tracker_with_Position_Contro_DW.obj_g.isInitialized == 1L) && Tracker_with_Position_Contro_DW.obj_g.isSetupComplete) {
+        Tracker_with_Position_Contro_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE = MW_PWM_GetHandle(6UL);
+        MW_PWM_SetDutyCycle(Tracker_with_Position_Contro_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE, 0.0);
+        Tracker_with_Position_Contro_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE = MW_PWM_GetHandle(6UL);
+        MW_PWM_Close(Tracker_with_Position_Contro_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE);
+    }
+}
+/* {E!d1932}End of Terminate for MATLABSystem: '<S4>/ENA1' */
+%if !WHITE_SPACE(tlcTerminateFcnOfS6B7)
+
+/* {S!d1934}Terminate for ToAsyncQueueBlock generated from: '<Root>/Sum' */
+%<tlcTerminateFcnOfS6B7>\
+%endif
+%if !WHITE_SPACE(tlcTerminateFcnOfS6B8)
+/* {S!d1936}Terminate for ToAsyncQueueBlock generated from: '<Root>/Azimuth Motor' */
+%<tlcTerminateFcnOfS6B8>\
+%endif
+%if !WHITE_SPACE(tlcTerminateFcnOfS6B9)
+/* {S!d1938}Terminate for ToAsyncQueueBlock generated from: '<Root>/Constant' */
+%<tlcTerminateFcnOfS6B9>\
+%endif
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS6B7)
+/* {S!d1940}CleanupRuntimeResources for ToAsyncQueueBlock generated from: '<Root>/Sum' */
+%<tlcCleanupRuntimeResourcesFcnOfS6B7>\
+%endif
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS6B8)
+/* {S!d1942}CleanupRuntimeResources for ToAsyncQueueBlock generated from: '<Root>/Azimuth Motor' */
+%<tlcCleanupRuntimeResourcesFcnOfS6B8>\
+%endif
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS6B9)
+/* {S!d1944}CleanupRuntimeResources for ToAsyncQueueBlock generated from: '<Root>/Constant' */
+%<tlcCleanupRuntimeResourcesFcnOfS6B9>\
+%endif
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function TerminateFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Terminate(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 5, fcnProtoType)>
+%endfunction

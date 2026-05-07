@@ -3,9 +3,9 @@
  *
  * Code generation for model "motor_position_control".
  *
- * Model version              : 1.118
- * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Wed Apr 22 10:53:50 2026
+ * Model version              : 1.119
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Sun May  3 23:07:59 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -14,8 +14,8 @@
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_motor_position_control_private_h_
-#define RTW_HEADER_motor_position_control_private_h_
+#ifndef motor_position_control_private_h_
+#define motor_position_control_private_h_
 #include "rtwtypes.h"
 #include "multiword_types.h"
 #include "motor_position_control_types.h"
@@ -41,4 +41,4 @@
 
 extern real_T rt_roundd_snf(real_T u);
 
-#endif                        /* RTW_HEADER_motor_position_control_private_h_ */
+#endif                                 /* motor_position_control_private_h_ */

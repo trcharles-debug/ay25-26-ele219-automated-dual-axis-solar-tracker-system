@@ -8,7 +8,14 @@
 ###########################################################################
 ## TOOLCHAIN SPECIFICATIONS
 ###########################################################################
-## Toolchain Name:          Arduino AVR
+## Toolchain Name:          ESP32
+
+
+###########################################################################
+## FILE INCLUSIONS
+###########################################################################
+-include arduino_macros.mk
+-include codertarget_assembly_flags.mk
 
 
 ###########################################################################
@@ -20,12 +27,27 @@
 # ARDUINO_BAUD = Intrinsically defined
 # ARDUINO_PROTOCOL = Intrinsically defined
 # ARDUINO_F_CPU = Intrinsically defined
+# ARDUINO_IDE_VERSION = Intrinsically defined
+# ESP_BOARD_NAME = Intrinsically defined
+# ESP_VARIANT_NAME = Intrinsically defined
+# ESP_FLASH_MODE = Intrinsically defined
+# ESP_FLASH_FREQUENCY = Intrinsically defined
+# ESP_FLASH_SIZE = Intrinsically defined
+# ESP_PARTITION_SCHEME = Intrinsically defined
+# ESP_DEFINES = Intrinsically defined
+# ESP_EXTRA_FLAGS = Intrinsically defined
+# ESP_EXTRA_LIBS = Intrinsically defined
 SHELL = %SystemRoot%/system32/cmd.exe
 PRODUCT_HEX = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).hex
-PRODUCT_BIN = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).eep
-ARDUINO_TOOLS = $(ARDUINO_ROOT)/hardware/tools/avr/bin
-ELF2EEP_OPTIONS = -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
-DOWNLOAD_ARGS =  >tmp.trash 2>&1 -P$(ARDUINO_PORT) -V -q -q -q -q -F -C$(ARDUINO_ROOT)/hardware/tools/avr/etc/avrdude.conf -p$(ARDUINO_MCU) -c$(ARDUINO_PROTOCOL) -b$(ARDUINO_BAUD) -D -Uflash:w:
+PRODUCT_BIN = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).bin
+PRODUCT_MAP = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).map
+PRODUCT_PARTITION_BIN = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).partitions.bin
+PRODUCT_BOOTLOADER_BIN = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).bootloader.bin
+ARDUINO_XTENSA_TOOLS = $(ARDUINO_ESP32_ROOT)/tools/xtensa-esp32-elf-gcc/$(ESP32_GCC_VERSION)/bin
+ARDUINO_ESP32_TOOLS = $(ARDUINO_ESP32_ROOT)/hardware/esp32/$(ESP32_LIB_VERSION)/tools
+ARDUINO_ESP32_SDK = $(ARDUINO_ESP32_TOOLS)/sdk/esp32
+ELF2BIN_OPTIONS =  elf2image --flash_mode $(ESP_FLASH_MODE) --flash_freq $(ESP_FLASH_FREQUENCY) --flash_size $(ESP_FLASH_SIZE) --elf-sha256-offset 0xb0
+BOOTLOADER_IMAGE_OPTIONS =  elf2image --flash_mode $(ESP_FLASH_MODE) --flash_freq $(ESP_FLASH_FREQUENCY) --flash_size $(ESP_FLASH_SIZE)
 
 
 #-------------------------
@@ -40,81 +62,101 @@ MV                        =
 # BUILD TOOL COMMANDS
 #------------------------
 
-# Assembler: Arduino AVR Assembler
-AS_PATH := $(ARDUINO_TOOLS)
-AS := $(AS_PATH)/avr-gcc
+# Assembler: ESP32 Assembler
+AS_PATH := $(ARDUINO_XTENSA_TOOLS)
+AS := $(AS_PATH)/xtensa-esp32-elf-gcc
 
-# C Compiler: Arduino AVR C Compiler
-CC_PATH := $(ARDUINO_TOOLS)
-CC := $(CC_PATH)/avr-gcc
+# C Compiler: ESP32 C Compiler
+CC_PATH := $(ARDUINO_XTENSA_TOOLS)
+CC := $(CC_PATH)/xtensa-esp32-elf-gcc
 
-# Linker: Arduino AVR Linker
-LD_PATH = $(ARDUINO_TOOLS)
-LD := $(LD_PATH)/avr-gcc
+# Linker: ESP32 Linker
+LD_PATH = $(ARDUINO_XTENSA_TOOLS)
+LD := $(LD_PATH)/xtensa-esp32-elf-g++
 
 
-# C++ Compiler: Arduino AVR C++ Compiler
-CPP_PATH := $(ARDUINO_TOOLS)
-CPP := $(CPP_PATH)/avr-g++
+# C++ Compiler: ESP32 C++ Compiler
+CPP_PATH := $(ARDUINO_XTENSA_TOOLS)
+CPP := $(CPP_PATH)/xtensa-esp32-elf-g++
 
-# C++ Linker: Arduino AVR C++ Linker
-CPP_LD_PATH = $(ARDUINO_TOOLS)
-CPP_LD := $(CPP_LD_PATH)/avr-gcc
+# C++ Linker: ESP32 C++ Linker
+CPP_LD_PATH = $(ARDUINO_XTENSA_TOOLS)
+CPP_LD := $(CPP_LD_PATH)/xtensa-esp32-elf-g++
 
-# Archiver: Arduino AVR Archiver
-AR_PATH := $(ARDUINO_TOOLS)
-AR := $(AR_PATH)/avr-ar
+# Archiver: ESP32 Archiver
+AR_PATH := $(ARDUINO_XTENSA_TOOLS)
+AR := $(AR_PATH)/xtensa-esp32-elf-ar
 
-# Indexing: Arduino AVR Ranlib
-RANLIB_PATH := $(ARDUINO_TOOLS)
-RANLIB := $(RANLIB_PATH)/avr-ranlib
+# Indexing: ESP32 Ranlib
+RANLIB_PATH := $(ARDUINO_XTENSA_TOOLS)
+RANLIB := $(RANLIB_PATH)/xtensa-esp32-elf-ranlib
 
 # Execute: Execute
 EXECUTE = $(PRODUCT)
 
 
 # Builder: GMAKE Utility
-MAKE_PATH = C:/Program Files/MATLAB/R2023b/bin/win64
+MAKE_PATH = C:/Program Files/MATLAB/R2024b/bin/win64
 MAKE = $(MAKE_PATH)/gmake
 
 
 #--------------------------------------
 # Faster Runs Build Configuration
 #--------------------------------------
-ARFLAGS              = rcs
+ARFLAGS              = cr
 ASFLAGS              = -MMD -MP  \
                        -Wall \
                        -x assembler-with-cpp \
                        $(ASFLAGS_ADDITIONAL) \
                        $(DEFINES) \
                        $(INCLUDES) \
-                       -c
-OBJCOPYFLAGS_BIN     = $(ELF2EEP_OPTIONS) $(PRODUCT) $(PRODUCT_BIN)
-CFLAGS               = -std=gnu11  \
                        -c \
-                       -w \
-                       -ffunction-sections \
-                       -fdata-sections  \
-                       -MMD \
-                       -DARDUINO=10801  \
-                       -MMD -MP  \
-                       -Os
-CPPFLAGS             = -std=gnu++11 -fpermissive -fno-exceptions -fno-threadsafe-statics  \
-                       -c \
-                       -w \
-                       -ffunction-sections \
-                       -fdata-sections  \
-                       -MMD \
-                       -DARDUINO=10801  \
-                       -MMD -MP  \
-                       -Os
-CPP_LDFLAGS          =  -w -Os -Wl,--gc-sections,--relax
+                       $(ESP_DEFINES) $(ESP_EXTRA_FLAGS)
+ESPTOOLFLAGS_BIN     = --chip esp32 $(ELF2BIN_OPTIONS) -o $(PRODUCT_BIN)  $(PRODUCT)
+CFLAGS               = -mlongcalls -Wno-frame-address -ffunction-sections -fdata-sections -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=deprecated-declarations -Wno-unused-parameter -Wno-sign-compare -ggdb -freorder-blocks -Wwrite-strings -fstack-protector -fstrict-volatile-bitfields -Wno-error=unused-but-set-variable -fno-jump-tables -fno-tree-switch-conversion -std=gnu99 -Wno-old-style-declaration -MMD -c -w \
+                       -DF_CPU=$(ARDUINO_F_CPU) -DARDUINO=$(ARDUINO_IDE_VERSION) -DARDUINO_$(ESP_BOARD_NAME)  \
+                       -DARDUINO_ARCH_ESP32 "-DARDUINO_BOARD=\"$(ESP_BOARD_NAME)\"" "-DARDUINO_VARIANT=\"$(ESP_VARIANT_NAME)\"" -DARDUINO_PARTITION_$(ESP_PARTITION_SCHEME) -DESP32 -DCORE_DEBUG_LEVEL=0  \
+                       -DARDUINO_RUNNING_CORE=1 -DARDUINO_EVENT_RUNNING_CORE=1 -DARDUINO_USB_CDC_ON_BOOT=0 @"$(ARDUINO_CODEGEN_FOLDER)/esp32sdkincludes.txt" \
+                       -Os \
+                       $(ESP_DEFINES) $(ESP_EXTRA_FLAGS)
+CPPFLAGS             = -mlongcalls -Wno-frame-address -ffunction-sections -fdata-sections -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=deprecated-declarations -Wno-unused-parameter -Wno-sign-compare -ggdb -freorder-blocks -Wwrite-strings -fstack-protector -fstrict-volatile-bitfields -Wno-error=unused-but-set-variable -fno-jump-tables -fno-tree-switch-conversion -std=gnu++11 -fexceptions -fno-rtti -MMD -c -w \
+                       -DF_CPU=$(ARDUINO_F_CPU) -DARDUINO=$(ARDUINO_IDE_VERSION) -DARDUINO_$(ESP_BOARD_NAME)  \
+                       -DARDUINO_ARCH_ESP32 "-DARDUINO_BOARD=\"$(ESP_BOARD_NAME)\"" "-DARDUINO_VARIANT=\"$(ESP_VARIANT_NAME)\"" -DARDUINO_PARTITION_$(ESP_PARTITION_SCHEME) -DESP32 -DCORE_DEBUG_LEVEL=0  \
+                       -DARDUINO_RUNNING_CORE=1 -DARDUINO_EVENT_RUNNING_CORE=1 -DARDUINO_USB_CDC_ON_BOOT=0 @"$(ARDUINO_CODEGEN_FOLDER)/esp32sdkincludes.txt" \
+                       -Os \
+                       $(ESP_DEFINES) $(ESP_EXTRA_FLAGS)
+CPP_LDFLAGS          = "-Wl,--Map=$(PRODUCT_MAP)"  \
+                       "-L$(ARDUINO_ESP32_SDK)/lib" "-L$(ARDUINO_ESP32_SDK)/ld" "-L$(ARDUINO_ESP32_SDK)/qio_qspi" \
+                       -T esp32.rom.redefined.ld -T memory.ld -T sections.ld -T esp32.rom.ld -T esp32.rom.api.ld -T esp32.rom.libgcc.ld -T esp32.rom.newlib-data.ld  \
+                       -T esp32.rom.syscalls.ld -T esp32.peripherals.ld   \
+                       -mlongcalls -Wno-frame-address -Wl,--cref -Wl,--gc-sections  \
+                       -fno-rtti -fno-lto -Wl,--wrap=esp_log_write -Wl,--wrap=esp_log_writev  \
+                       -Wl,--wrap=log_printf -u ld_include_hli_vectors_bt  \
+                       -u _Z5setupv -u _Z4loopv -u esp_app_desc -u pthread_include_pthread_impl -u pthread_include_pthread_cond_impl  \
+                       -u pthread_include_pthread_local_storage_impl -u pthread_include_pthread_rwlock_impl -u include_esp_phy_override  \
+                       -u ld_include_highint_hdl -u start_app -u start_app_other_cores -u __ubsan_include -Wl,--wrap=longjmp -u __assert_func -u vfs_include_syscalls_impl  \
+                       -Wl,--undefined=uxTopUsedPriority -u app_main -u newlib_include_heap_impl -u newlib_include_syscalls_impl -u newlib_include_pthread_impl  \
+                       -u newlib_include_assert_impl -u __cxa_guard_dummy -DESP32 -DCORE_DEBUG_LEVEL=0 -DARDUINO_RUNNING_CORE=1 -DARDUINO_EVENT_RUNNING_CORE=1 -DARDUINO_USB_CDC_ON_BOOT=0  \
+                       $(ESP_DEFINES) $(ESP_EXTRA_FLAGS)
 CPP_SHAREDLIB_LDFLAGS =
-DOWNLOAD_FLAGS       = $(DOWNLOAD_ARGS)$(PRODUCT_HEX):i
+DEF                  = --chip esp32 $(BOOTLOADER_IMAGE_OPTIONS) -o $(PRODUCT_BOOTLOADER_BIN)  $(ARDUINO_ESP32_SDK)/bin/bootloader_qio_80m.elf
+DOWNLOAD_FLAGS       =
 EXECUTE_FLAGS        =
-OBJCOPYFLAGS_HEX     = -O ihex -R .eeprom $(PRODUCT) $(PRODUCT_HEX)
-LDFLAGS              =  -w -Os -Wl,--gc-sections,--relax
+LDFLAGS              = "-Wl,--Map=$(PRODUCT_MAP)"  \
+                       "-L$(ARDUINO_ESP32_SDK)/lib" "-L$(ARDUINO_ESP32_SDK)/ld" "-L$(ARDUINO_ESP32_SDK)/qio_qspi" \
+                       -T esp32.rom.redefined.ld -T memory.ld -T sections.ld -T esp32.rom.ld -T esp32.rom.api.ld -T esp32.rom.libgcc.ld -T esp32.rom.newlib-data.ld  \
+                       -T esp32.rom.syscalls.ld -T esp32.peripherals.ld   \
+                       -mlongcalls -Wno-frame-address -Wl,--cref -Wl,--gc-sections  \
+                       -fno-rtti -fno-lto -Wl,--wrap=esp_log_write -Wl,--wrap=esp_log_writev  \
+                       -Wl,--wrap=log_printf -u ld_include_hli_vectors_bt  \
+                       -u _Z5setupv -u _Z4loopv -u esp_app_desc -u pthread_include_pthread_impl -u pthread_include_pthread_cond_impl  \
+                       -u pthread_include_pthread_local_storage_impl -u pthread_include_pthread_rwlock_impl -u include_esp_phy_override  \
+                       -u ld_include_highint_hdl -u start_app -u start_app_other_cores -u __ubsan_include -Wl,--wrap=longjmp -u __assert_func -u vfs_include_syscalls_impl  \
+                       -Wl,--undefined=uxTopUsedPriority -u app_main -u newlib_include_heap_impl -u newlib_include_syscalls_impl -u newlib_include_pthread_impl  \
+                       -u newlib_include_assert_impl -u __cxa_guard_dummy -DESP32 -DCORE_DEBUG_LEVEL=0 -DARDUINO_RUNNING_CORE=1 -DARDUINO_EVENT_RUNNING_CORE=1 -DARDUINO_USB_CDC_ON_BOOT=0  \
+                       $(ESP_DEFINES) $(ESP_EXTRA_FLAGS)
 MAKE_FLAGS           = -f $(MAKEFILE)
+GENPARTFLAGS_HEX     = -q  $(START_DIR)/$(PRODUCT_NAME)_ert_rtw/partitions.csv $(PRODUCT_PARTITION_BIN)
 SHAREDLIB_LDFLAGS    =
 
 
@@ -124,49 +166,46 @@ SHAREDLIB_LDFLAGS    =
 #---------------
 # C Compiler
 #---------------
-CFLAGS_SKIPFORSIL = -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -D_RUNONTARGETHARDWARE_BUILD_
+CFLAGS_SKIPFORSIL = -DHAVE_CONFIG_H "-DMBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\"" -DUNITY_INCLUDE_CONFIG_H -DWITH_POSIX -D_GNU_SOURCE "-DIDF_VER=\"v4.4.5\"" -DESP_PLATFORM -D_POSIX_READER_WRITER_LOCKS -D_RUNONTARGETHARDWARE_BUILD_ -DMW_DONOTSTART_SCHEDULER -D_ROTH_ESP32_
 CFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 CFLAGS += $(CFLAGS_SKIPFORSIL) $(CFLAGS_BASIC)
 #-----------------
 # C++ Compiler
 #-----------------
-CPPFLAGS_SKIPFORSIL = -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR -D_RUNONTARGETHARDWARE_BUILD_
+CPPFLAGS_SKIPFORSIL = -DHAVE_CONFIG_H "-DMBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\"" -DUNITY_INCLUDE_CONFIG_H -DWITH_POSIX -D_GNU_SOURCE "-DIDF_VER=\"v4.4.5\"" -DESP_PLATFORM -D_POSIX_READER_WRITER_LOCKS -D_RUNONTARGETHARDWARE_BUILD_ -DMW_DONOTSTART_SCHEDULER -D_ROTH_ESP32_
 CPPFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 CPPFLAGS += $(CPPFLAGS_SKIPFORSIL) $(CPPFLAGS_BASIC)
 #---------------
 # C++ Linker
 #---------------
-CPP_LDFLAGS_SKIPFORSIL = -mmcu=atmega328p 
+CPP_LDFLAGS_SKIPFORSIL =  
 CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
 #------------------------------
 # C++ Shared Library Linker
 #------------------------------
-CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL = -mmcu=atmega328p 
+CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL =  
 CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
 #-----------
 # Linker
 #-----------
-LDFLAGS_SKIPFORSIL = -mmcu=atmega328p 
+LDFLAGS_SKIPFORSIL =  
 LDFLAGS += $(LDFLAGS_SKIPFORSIL)
 #--------------------------
 # Shared Library Linker
 #--------------------------
-SHAREDLIB_LDFLAGS_SKIPFORSIL = -mmcu=atmega328p 
+SHAREDLIB_LDFLAGS_SKIPFORSIL =  
 SHAREDLIB_LDFLAGS += $(SHAREDLIB_LDFLAGS_SKIPFORSIL)
-
-
--include codertarget_assembly_flags.mk
 
 
 ###########################################################################
 ## Define Macros
 ###########################################################################
-SLMKPATH=C:/PROGRA~3/MATLAB/SUPPOR~1/R2023b/toolbox/target/SUPPOR~1/ARDUIN~2/STATIC~1
+SLMKPATH=C:/PROGRA~3/MATLAB/SUPPOR~1/R2024b/toolbox/target/SUPPOR~1/ARDUIN~1/STATIC~1
 MODELMK=arduino_motor_encoder_open_loop.mk
-SLIB_PATH=C:/Users/yoany/DOCUME~1/MATLAB/R2023b/ARDUIN~1/ARDUIN~1/FASTER~1
-VARIANT_HEADER_PATH=$(ARDUINO_ROOT)/hardware/arduino/avr/variants/standard
-ARDUINO_SKETCHBOOK_ROOT=C:/PROGRA~3/MATLAB/SUPPOR~1/R2023b/aIDE/portable/SKETCH~1/LIBRAR~1
-ARDUINO_BASESUPPORTPKG_ROOT=C:/PROGRA~3/MATLAB/SUPPOR~1/R2023b/toolbox/target/SUPPOR~1/ARDUIN~2
+SLIB_PATH=C:/Users/shaha/DOCUME~1/MATLAB/R2024b/ARDUIN~1/ESP32W~1/FASTER~1
+VARIANT_HEADER_PATH=$(ARDUINO_ESP32_ROOT)/hardware/esp32/2.0.11/variants/esp32
+ARDUINO_SKETCHBOOK_ROOT=C:/PROGRA~3/MATLAB/SUPPOR~1/R2024b/aCLI/user/LIBRAR~1
+ARDUINO_BASESUPPORTPKG_ROOT=C:/PROGRA~3/MATLAB/SUPPOR~1/R2024b/toolbox/target/SUPPOR~1/ARDUIN~1
 
 
 ###########################################################################
@@ -193,6 +232,6 @@ export ARDUINO_BASESUPPORTPKG_ROOT
 .PHONY : all
 all : 
 	@echo "### Generating static library."
-	"$(MAKE)" -j3 -C "$(SLMKPATH)" SHELL="$(SHELL)" -f avrcore.mk all
-	"$(MAKE)" -j3 SHELL="$(SHELL)" -f "$(MODELMK)" all
+	"$(MAKE)" -j7 -C "$(SLMKPATH)" SHELL="$(SHELL)" -f esp32core.mk all
+	"$(MAKE)" -j7 SHELL="$(SHELL)" -f "$(MODELMK)" all
 

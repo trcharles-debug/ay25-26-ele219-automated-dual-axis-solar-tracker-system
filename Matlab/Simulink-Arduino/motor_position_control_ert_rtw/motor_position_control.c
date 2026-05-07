@@ -3,9 +3,9 @@
  *
  * Code generation for model "motor_position_control".
  *
- * Model version              : 1.118
- * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Wed Apr 22 10:53:50 2026
+ * Model version              : 1.119
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Sun May  3 23:07:59 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -149,19 +149,19 @@ void motor_position_control_step2(void) /* Sample time: [0.01s, 0.0s] */
   int32_T rtb_Encoder_0;
   uint8_T tmp;
 
-  /* Gain: '<S40>/Filter Coefficient' incorporates:
-   *  DiscreteIntegrator: '<S32>/Filter'
-   *  Gain: '<S31>/Derivative Gain'
-   *  Sum: '<S32>/SumD'
+  /* Gain: '<S43>/Filter Coefficient' incorporates:
+   *  DiscreteIntegrator: '<S35>/Filter'
+   *  Gain: '<S33>/Derivative Gain'
+   *  Sum: '<S35>/SumD'
    */
   rtb_FilterCoefficient = (motor_position_control_P.PIDController_D *
     motor_position_control_B.Sum - motor_position_control_DW.Filter_DSTATE) *
     motor_position_control_P.PIDController_N;
 
   /* Gain: '<Root>/Gain' incorporates:
-   *  DiscreteIntegrator: '<S37>/Integrator'
-   *  Gain: '<S42>/Proportional Gain'
-   *  Sum: '<S46>/Sum'
+   *  DiscreteIntegrator: '<S40>/Integrator'
+   *  Gain: '<S45>/Proportional Gain'
+   *  Sum: '<S49>/Sum'
    */
   rtb_Gear_Ratio = ((motor_position_control_P.PIDController_P *
                      motor_position_control_B.Sum +
@@ -232,21 +232,16 @@ void motor_position_control_step2(void) /* Sample time: [0.01s, 0.0s] */
   /* Abs: '<S4>/Abs' */
   rtb_Gear_Ratio = fabs(rtb_Gear_Ratio);
 
-  /* MATLABSystem: '<S4>/ENA1' */
+  /* Start for MATLABSystem: '<S4>/ENA1' */
   if (!(rtb_Gear_Ratio <= 255.0)) {
     rtb_Gear_Ratio = 255.0;
   }
 
+  /* MATLABSystem: '<S4>/ENA1' */
   MW_PWM_SetDutyCycle(motor_position_control_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE,
                       rtb_Gear_Ratio);
 
   /* MATLABSystem: '<S3>/Encoder' */
-  if (motor_position_control_DW.obj.SampleTime !=
-      motor_position_control_P.Encoder_SampleTime) {
-    motor_position_control_DW.obj.SampleTime =
-      motor_position_control_P.Encoder_SampleTime;
-  }
-
   if (motor_position_control_DW.obj.TunablePropsChanged) {
     motor_position_control_DW.obj.TunablePropsChanged = false;
   }
@@ -260,15 +255,15 @@ void motor_position_control_step2(void) /* Sample time: [0.01s, 0.0s] */
   motor_position_control_B.radsToRPM1 = motor_position_control_P.Gear_Ratio_Gain
     * (real_T)rtb_Encoder_0 * motor_position_control_P.radsToRPM1_Gain;
 
-  /* Gain: '<S34>/Integral Gain' */
+  /* Gain: '<S37>/Integral Gain' */
   rtb_IntegralGain = motor_position_control_P.PIDController_I *
     motor_position_control_B.Sum;
 
-  /* Update for DiscreteIntegrator: '<S37>/Integrator' */
+  /* Update for DiscreteIntegrator: '<S40>/Integrator' */
   motor_position_control_DW.Integrator_DSTATE +=
     motor_position_control_P.Integrator_gainval * rtb_IntegralGain;
 
-  /* Update for DiscreteIntegrator: '<S32>/Filter' */
+  /* Update for DiscreteIntegrator: '<S35>/Filter' */
   motor_position_control_DW.Filter_DSTATE +=
     motor_position_control_P.Filter_gainval * rtb_FilterCoefficient;
 
@@ -314,6 +309,9 @@ void motor_position_control_initialize(void)
   }
 
   rtsiSetSimTimeStep(&motor_position_control_M->solverInfo, MAJOR_TIME_STEP);
+  rtsiSetIsMinorTimeStepWithModeChange(&motor_position_control_M->solverInfo,
+    false);
+  rtsiSetIsContModeFrozen(&motor_position_control_M->solverInfo, false);
   rtsiSetSolverName(&motor_position_control_M->solverInfo,"FixedStepDiscrete");
   rtmSetTPtr(motor_position_control_M, &motor_position_control_M->Timing.tArray
              [0]);
@@ -321,10 +319,10 @@ void motor_position_control_initialize(void)
   motor_position_control_M->Timing.stepSize0 = 0.005;
 
   /* External mode info */
-  motor_position_control_M->Sizes.checksums[0] = (3499009820U);
-  motor_position_control_M->Sizes.checksums[1] = (4170882430U);
-  motor_position_control_M->Sizes.checksums[2] = (1752202304U);
-  motor_position_control_M->Sizes.checksums[3] = (600087900U);
+  motor_position_control_M->Sizes.checksums[0] = (2048567261U);
+  motor_position_control_M->Sizes.checksums[1] = (2684716078U);
+  motor_position_control_M->Sizes.checksums[2] = (2814905300U);
+  motor_position_control_M->Sizes.checksums[3] = (1369986055U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -343,8 +341,7 @@ void motor_position_control_initialize(void)
       &motor_position_control_M->SpecialInfo.mappingInfo);
     rteiSetChecksumsPtr(motor_position_control_M->extModeInfo,
                         motor_position_control_M->Sizes.checksums);
-    rteiSetTPtr(motor_position_control_M->extModeInfo, rtmGetTPtr
-                (motor_position_control_M));
+    rteiSetTFinalTicks(motor_position_control_M->extModeInfo, -1);
   }
 
   /* block I/O */
@@ -381,18 +378,16 @@ void motor_position_control_initialize(void)
   motor_position_control_DW.obj.Index = 0U;
   motor_position_control_DW.obj.matlabCodegenIsDeleted = false;
   motor_position_control_DW.objisempty_i = true;
-  motor_position_control_DW.obj.SampleTime =
-    motor_position_control_P.Encoder_SampleTime;
   motor_position_control_DW.obj.isInitialized = 1L;
   MW_EncoderSetup(2UL, 3UL, &motor_position_control_DW.obj.Index);
   motor_position_control_DW.obj.isSetupComplete = true;
   motor_position_control_DW.obj.TunablePropsChanged = false;
 
-  /* InitializeConditions for DiscreteIntegrator: '<S37>/Integrator' */
+  /* InitializeConditions for DiscreteIntegrator: '<S40>/Integrator' */
   motor_position_control_DW.Integrator_DSTATE =
     motor_position_control_P.PIDController_InitialConditio_f;
 
-  /* InitializeConditions for DiscreteIntegrator: '<S32>/Filter' */
+  /* InitializeConditions for DiscreteIntegrator: '<S35>/Filter' */
   motor_position_control_DW.Filter_DSTATE =
     motor_position_control_P.PIDController_InitialConditionF;
 

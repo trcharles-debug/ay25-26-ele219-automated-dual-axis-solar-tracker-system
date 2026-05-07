@@ -12,6 +12,13 @@
 
 
 ###########################################################################
+## FILE INCLUSIONS
+###########################################################################
+-include arduino_macros.mk
+-include codertarget_assembly_flags.mk
+
+
+###########################################################################
 ## TOOLCHAIN MACROS
 ###########################################################################
 # ARDUINO_ROOT = Intrinsically defined
@@ -23,7 +30,7 @@
 SHELL = %SystemRoot%/system32/cmd.exe
 PRODUCT_HEX = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).hex
 PRODUCT_BIN = $(RELATIVE_PATH_TO_ANCHOR)/$(PRODUCT_NAME).eep
-ARDUINO_TOOLS = $(ARDUINO_ROOT)/hardware/tools/avr/bin
+ARDUINO_TOOLS = $(ARDUINO_AVR_ROOT)/tools/avr-gcc/$(AVR_GCC_LIB_VERSION)/bin
 ELF2EEP_OPTIONS = -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
 DOWNLOAD_ARGS =  >tmp.trash 2>&1 -P$(ARDUINO_PORT) -V -q -q -q -q -F -C$(ARDUINO_ROOT)/hardware/tools/avr/etc/avrdude.conf -p$(ARDUINO_MCU) -c$(ARDUINO_PROTOCOL) -b$(ARDUINO_BAUD) -D -Uflash:w:
 
@@ -74,7 +81,7 @@ EXECUTE = $(PRODUCT)
 
 
 # Builder: GMAKE Utility
-MAKE_PATH = C:/Program Files/MATLAB/R2023b/bin/win64
+MAKE_PATH = C:/Program Files/MATLAB/R2024b/bin/win64
 MAKE = $(MAKE_PATH)/gmake
 
 
@@ -155,18 +162,15 @@ SHAREDLIB_LDFLAGS_SKIPFORSIL = -mmcu=atmega328p
 SHAREDLIB_LDFLAGS += $(SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
 
--include codertarget_assembly_flags.mk
-
-
 ###########################################################################
 ## Define Macros
 ###########################################################################
-SLMKPATH=C:/PROGRA~3/MATLAB/SUPPOR~1/R2023b/toolbox/target/SUPPOR~1/ARDUIN~2/STATIC~1
+SLMKPATH=C:/PROGRA~3/MATLAB/SUPPOR~1/R2024b/toolbox/target/SUPPOR~1/ARDUIN~1/STATIC~1
 MODELMK=motor_position_control.mk
-SLIB_PATH=C:/Users/yoany/DOCUME~1/MATLAB/R2023b/ARDUIN~1/ARDUIN~1/FASTER~1
-VARIANT_HEADER_PATH=$(ARDUINO_ROOT)/hardware/arduino/avr/variants/standard
-ARDUINO_SKETCHBOOK_ROOT=C:/PROGRA~3/MATLAB/SUPPOR~1/R2023b/aIDE/portable/SKETCH~1/LIBRAR~1
-ARDUINO_BASESUPPORTPKG_ROOT=C:/PROGRA~3/MATLAB/SUPPOR~1/R2023b/toolbox/target/SUPPOR~1/ARDUIN~2
+SLIB_PATH=C:/Users/shaha/DOCUME~1/MATLAB/R2024b/ARDUIN~1/ARDUIN~2/FASTER~1
+VARIANT_HEADER_PATH=$(ARDUINO_AVR_ROOT)/hardware/avr/1.8.3/variants/standard
+ARDUINO_SKETCHBOOK_ROOT=C:/PROGRA~3/MATLAB/SUPPOR~1/R2024b/aCLI/user/LIBRAR~1
+ARDUINO_BASESUPPORTPKG_ROOT=C:/PROGRA~3/MATLAB/SUPPOR~1/R2024b/toolbox/target/SUPPOR~1/ARDUIN~1
 
 
 ###########################################################################
@@ -193,6 +197,6 @@ export ARDUINO_BASESUPPORTPKG_ROOT
 .PHONY : all
 all : 
 	@echo "### Generating static library."
-	"$(MAKE)" -j3 -C "$(SLMKPATH)" SHELL="$(SHELL)" -f avrcore.mk all
-	"$(MAKE)" -j3 SHELL="$(SHELL)" -f "$(MODELMK)" all
+	"$(MAKE)" -j7 -C "$(SLMKPATH)" SHELL="$(SHELL)" -f avrcore.mk all
+	"$(MAKE)" -j7 SHELL="$(SHELL)" -f "$(MODELMK)" all
 

@@ -4,17 +4,17 @@
  * Code generated for Simulink model 'arduino_encoder'.
  *
  * Model version                  : 1.14
- * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Tue Apr 21 21:51:39 2026
+ * Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+ * C/C++ source code generated on : Wed May  6 01:24:42 2026
  *
  * Target selection: ert.tlc
- * Embedded hardware selection: Atmel->AVR
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_arduino_encoder_private_h_
-#define RTW_HEADER_arduino_encoder_private_h_
+#ifndef arduino_encoder_private_h_
+#define arduino_encoder_private_h_
 #include "rtwtypes.h"
 #include "multiword_types.h"
 #include "arduino_encoder_types.h"
@@ -25,7 +25,7 @@
 #ifndef rtmSetTFinal
 #define rtmSetTFinal(rtm, val)         ((rtm)->Timing.tFinal = (val))
 #endif
-#endif                               /* RTW_HEADER_arduino_encoder_private_h_ */
+#endif                                 /* arduino_encoder_private_h_ */
 
 /*
  * File trailer for generated code.

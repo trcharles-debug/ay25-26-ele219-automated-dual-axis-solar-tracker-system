@@ -3,13 +3,12 @@
  *
  * Code generation for model "arduino_motor_encoder_open_loop".
  *
- * Model version              : 1.96
- * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Wed Apr 22 20:11:51 2026
+ * Model version              : 3.7
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Tue May  5 22:26:30 2026
  *
  * Target selection: ert.tlc
- * Note: GRT includes extra infrastructure and instrumentation for prototyping
- * Embedded hardware selection: Atmel->AVR
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
@@ -52,35 +51,23 @@ real_T rt_roundd_snf(real_T u)
 /* Model step function */
 void arduino_motor_encoder_open_loop_step(void)
 {
-  /* local block i/o variables */
-  real_T rtb_TSamp;
   real_T rtb_Switch_idx_0;
   real_T rtb_Switch_idx_1;
-  int32_T rtb_Encoder_0;
+  real_T rtb_TSamp;
+  int32_T rtb_Encoder_b_0;
   uint8_T tmp;
 
-  /* Step: '<Root>/Step' */
-  if ((((arduino_motor_encoder_open_l_M->Timing.clockTick1+
-         arduino_motor_encoder_open_l_M->Timing.clockTickH1* 4294967296.0)) *
-       0.01) < arduino_motor_encoder_open_lo_P.Step_Time) {
-    /* Step: '<Root>/Step' */
-    arduino_motor_encoder_open_lo_B.Step =
-      arduino_motor_encoder_open_lo_P.Step_Y0;
-  } else {
-    /* Step: '<Root>/Step' */
-    arduino_motor_encoder_open_lo_B.Step =
-      arduino_motor_encoder_open_lo_P.Step_YFinal;
-  }
+  /* Constant: '<Root>/Constant' */
+  arduino_motor_encoder_open_lo_B.Constant =
+    arduino_motor_encoder_open_lo_P.Constant_Value;
 
-  /* End of Step: '<Root>/Step' */
-
-  /* Switch: '<S2>/Switch' incorporates:
-   *  Constant: '<S2>/Constant1'
-   *  Constant: '<S2>/Constant2'
-   *  Constant: '<S2>/Constant4'
-   *  Constant: '<S2>/Constant5'
+  /* Switch: '<S4>/Switch' incorporates:
+   *  Constant: '<S4>/Constant1'
+   *  Constant: '<S4>/Constant2'
+   *  Constant: '<S4>/Constant4'
+   *  Constant: '<S4>/Constant5'
    */
-  if (arduino_motor_encoder_open_lo_B.Step >
+  if (arduino_motor_encoder_open_lo_B.Constant >
       arduino_motor_encoder_open_lo_P.Switch_Threshold) {
     rtb_Switch_idx_0 = arduino_motor_encoder_open_lo_P.Constant2_Value;
     rtb_Switch_idx_1 = arduino_motor_encoder_open_lo_P.Constant1_Value;
@@ -89,9 +76,9 @@ void arduino_motor_encoder_open_loop_step(void)
     rtb_Switch_idx_1 = arduino_motor_encoder_open_lo_P.Constant4_Value;
   }
 
-  /* End of Switch: '<S2>/Switch' */
+  /* End of Switch: '<S4>/Switch' */
 
-  /* MATLABSystem: '<S2>/IN1' */
+  /* MATLABSystem: '<S4>/IN1' */
   rtb_Switch_idx_0 = rt_roundd_snf(rtb_Switch_idx_0);
   if (rtb_Switch_idx_0 < 256.0) {
     if (rtb_Switch_idx_0 >= 0.0) {
@@ -103,11 +90,11 @@ void arduino_motor_encoder_open_loop_step(void)
     tmp = MAX_uint8_T;
   }
 
-  writeDigitalPin(7, tmp);
+  writeDigitalPin(32, tmp);
 
-  /* End of MATLABSystem: '<S2>/IN1' */
+  /* End of MATLABSystem: '<S4>/IN1' */
 
-  /* MATLABSystem: '<S2>/IN2' */
+  /* MATLABSystem: '<S4>/IN2' */
   rtb_Switch_idx_0 = rt_roundd_snf(rtb_Switch_idx_1);
   if (rtb_Switch_idx_0 < 256.0) {
     if (rtb_Switch_idx_0 >= 0.0) {
@@ -119,126 +106,162 @@ void arduino_motor_encoder_open_loop_step(void)
     tmp = MAX_uint8_T;
   }
 
-  writeDigitalPin(8, tmp);
+  writeDigitalPin(33, tmp);
 
-  /* End of MATLABSystem: '<S2>/IN2' */
-  /* MATLABSystem: '<S1>/Encoder' */
-  if (arduino_motor_encoder_open_l_DW.obj.SampleTime !=
-      arduino_motor_encoder_open_lo_P.Encoder_SampleTime) {
-    arduino_motor_encoder_open_l_DW.obj.SampleTime =
-      arduino_motor_encoder_open_lo_P.Encoder_SampleTime;
+  /* End of MATLABSystem: '<S4>/IN2' */
+  /* MATLABSystem: '<S3>/Encoder' */
+  if (arduino_motor_encoder_open_l_DW.obj_b.TunablePropsChanged) {
+    arduino_motor_encoder_open_l_DW.obj_b.TunablePropsChanged = false;
   }
 
-  if (arduino_motor_encoder_open_l_DW.obj.TunablePropsChanged) {
-    arduino_motor_encoder_open_l_DW.obj.TunablePropsChanged = false;
-  }
+  MW_EncoderRead(arduino_motor_encoder_open_l_DW.obj_b.Index, &rtb_Encoder_b_0);
 
-  MW_EncoderRead(arduino_motor_encoder_open_l_DW.obj.Index, &rtb_Encoder_0);
-
-  /* SampleTimeMath: '<S4>/TSamp' incorporates:
-   *  DataTypeConversion: '<S1>/Data Type Conversion'
-   *  Gain: '<S1>/Gear_Ratio'
-   *  MATLABSystem: '<S1>/Encoder'
+  /* SampleTimeMath: '<S6>/TSamp' incorporates:
+   *  DataTypeConversion: '<S3>/Data Type Conversion'
+   *  Gain: '<S3>/Gear_Ratio'
+   *  MATLABSystem: '<S3>/Encoder'
    *
-   * About '<S4>/TSamp':
+   * About '<S6>/TSamp':
    *  y = u * K where K = 1 / ( w * Ts )
-   */
+   *   */
   rtb_TSamp = arduino_motor_encoder_open_lo_P.Gear_Ratio_Gain * (real_T)
-    rtb_Encoder_0 * arduino_motor_encoder_open_lo_P.TSamp_WtEt;
+    rtb_Encoder_b_0 * arduino_motor_encoder_open_lo_P.TSamp_WtEt;
 
-  /* Gain: '<Root>/rad//sToRPM' incorporates:
-   *  Sum: '<S4>/Diff'
-   *  UnitDelay: '<S4>/UD'
+  /* Gain: '<S1>/rad//s To RPM' incorporates:
+   *  Sum: '<S6>/Diff'
+   *  UnitDelay: '<S6>/UD'
    */
   arduino_motor_encoder_open_lo_B.radsToRPM = (rtb_TSamp -
     arduino_motor_encoder_open_l_DW.UD_DSTATE) *
     arduino_motor_encoder_open_lo_P.radsToRPM_Gain;
 
-  /* MATLABSystem: '<S2>/ENA1' */
-  arduino_motor_encoder_open_l_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE =
-    MW_PWM_GetHandle(6UL);
+  /* MATLABSystem: '<S4>/ENA1' */
+  arduino_motor_encoder_open_l_DW.obj_d.PWMDriverObj.MW_PWM_HANDLE =
+    MW_PWM_GetHandle(18U);
 
-  /* Abs: '<S2>/Abs' */
-  rtb_Switch_idx_1 = fabs(arduino_motor_encoder_open_lo_B.Step);
+  /* Abs: '<S4>/Abs' */
+  rtb_Switch_idx_0 = fabs(arduino_motor_encoder_open_lo_B.Constant);
 
-  /* MATLABSystem: '<S2>/ENA1' */
-  if (!(rtb_Switch_idx_1 <= 255.0)) {
-    rtb_Switch_idx_1 = 255.0;
+  /* Start for MATLABSystem: '<S4>/ENA1' */
+  if (!(rtb_Switch_idx_0 <= 255.0)) {
+    rtb_Switch_idx_0 = 255.0;
   }
 
+  /* MATLABSystem: '<S4>/ENA1' */
   MW_PWM_SetDutyCycle
-    (arduino_motor_encoder_open_l_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE,
-     rtb_Switch_idx_1);
+    (arduino_motor_encoder_open_l_DW.obj_d.PWMDriverObj.MW_PWM_HANDLE,
+     rtb_Switch_idx_0);
 
-  /* Update for UnitDelay: '<S4>/UD' */
+  /* Constant: '<Root>/Constant1' */
+  arduino_motor_encoder_open_lo_B.Constant1 =
+    arduino_motor_encoder_open_lo_P.Constant1_Value_g;
+
+  /* Switch: '<S8>/Switch' incorporates:
+   *  Constant: '<S8>/Constant1'
+   *  Constant: '<S8>/Constant2'
+   *  Constant: '<S8>/Constant4'
+   *  Constant: '<S8>/Constant5'
+   */
+  if (arduino_motor_encoder_open_lo_B.Constant1 >
+      arduino_motor_encoder_open_lo_P.Switch_Threshold_k) {
+    rtb_Switch_idx_0 = arduino_motor_encoder_open_lo_P.Constant2_Value_d;
+    rtb_Switch_idx_1 = arduino_motor_encoder_open_lo_P.Constant1_Value_l;
+  } else {
+    rtb_Switch_idx_0 = arduino_motor_encoder_open_lo_P.Constant5_Value_e;
+    rtb_Switch_idx_1 = arduino_motor_encoder_open_lo_P.Constant4_Value_p;
+  }
+
+  /* End of Switch: '<S8>/Switch' */
+
+  /* MATLABSystem: '<S8>/IN3' */
+  rtb_Switch_idx_0 = rt_roundd_snf(rtb_Switch_idx_0);
+  if (rtb_Switch_idx_0 < 256.0) {
+    if (rtb_Switch_idx_0 >= 0.0) {
+      tmp = (uint8_T)rtb_Switch_idx_0;
+    } else {
+      tmp = 0U;
+    }
+  } else {
+    tmp = MAX_uint8_T;
+  }
+
+  writeDigitalPin(19, tmp);
+
+  /* End of MATLABSystem: '<S8>/IN3' */
+
+  /* MATLABSystem: '<S8>/IN4' */
+  rtb_Switch_idx_0 = rt_roundd_snf(rtb_Switch_idx_1);
+  if (rtb_Switch_idx_0 < 256.0) {
+    if (rtb_Switch_idx_0 >= 0.0) {
+      tmp = (uint8_T)rtb_Switch_idx_0;
+    } else {
+      tmp = 0U;
+    }
+  } else {
+    tmp = MAX_uint8_T;
+  }
+
+  writeDigitalPin(25, tmp);
+
+  /* End of MATLABSystem: '<S8>/IN4' */
+  /* MATLABSystem: '<S7>/Encoder' */
+  if (arduino_motor_encoder_open_l_DW.obj_l.TunablePropsChanged) {
+    arduino_motor_encoder_open_l_DW.obj_l.TunablePropsChanged = false;
+  }
+
+  MW_EncoderRead(arduino_motor_encoder_open_l_DW.obj_l.Index, &rtb_Encoder_b_0);
+
+  /* SampleTimeMath: '<S10>/TSamp' incorporates:
+   *  DataTypeConversion: '<S7>/Data Type Conversion'
+   *  Gain: '<S7>/Gear_Ratio'
+   *  MATLABSystem: '<S7>/Encoder'
+   *
+   * About '<S10>/TSamp':
+   *  y = u * K where K = 1 / ( w * Ts )
+   *   */
+  rtb_Switch_idx_1 = arduino_motor_encoder_open_lo_P.Gear_Ratio_Gain_m * (real_T)
+    rtb_Encoder_b_0 * arduino_motor_encoder_open_lo_P.TSamp_WtEt_k;
+
+  /* Gain: '<S2>/rad//s To RPM' incorporates:
+   *  Sum: '<S10>/Diff'
+   *  UnitDelay: '<S10>/UD'
+   */
+  arduino_motor_encoder_open_lo_B.radsToRPM_k = (rtb_Switch_idx_1 -
+    arduino_motor_encoder_open_l_DW.UD_DSTATE_b) *
+    arduino_motor_encoder_open_lo_P.radsToRPM_Gain_n;
+
+  /* MATLABSystem: '<S8>/ENB' */
+  arduino_motor_encoder_open_l_DW.obj_p.PWMDriverObj.MW_PWM_HANDLE =
+    MW_PWM_GetHandle(26U);
+
+  /* Abs: '<S8>/Abs' */
+  rtb_Switch_idx_0 = fabs(arduino_motor_encoder_open_lo_B.Constant1);
+
+  /* Start for MATLABSystem: '<S8>/ENB' */
+  if (!(rtb_Switch_idx_0 <= 255.0)) {
+    rtb_Switch_idx_0 = 255.0;
+  }
+
+  /* MATLABSystem: '<S8>/ENB' */
+  MW_PWM_SetDutyCycle
+    (arduino_motor_encoder_open_l_DW.obj_p.PWMDriverObj.MW_PWM_HANDLE,
+     rtb_Switch_idx_0);
+
+  /* Update for UnitDelay: '<S6>/UD' */
   arduino_motor_encoder_open_l_DW.UD_DSTATE = rtb_TSamp;
 
-  {                                    /* Sample time: [0.0s, 0.0s] */
-    extmodeErrorCode_T errorCode = EXTMODE_SUCCESS;
-    extmodeSimulationTime_T currentTime = (extmodeSimulationTime_T)
-      (((arduino_motor_encoder_open_l_M->Timing.clockTick0+
-         arduino_motor_encoder_open_l_M->Timing.clockTickH0* 4294967296.0) * 1)
-       + 0)
-      ;
-
-    /* Trigger External Mode event */
-    errorCode = extmodeEvent(0,currentTime);
-    if (errorCode != EXTMODE_SUCCESS) {
-      /* Code to handle External Mode event errors
-         may be added here */
-    }
-  }
-
-  {                                    /* Sample time: [0.01s, 0.0s] */
-    extmodeErrorCode_T errorCode = EXTMODE_SUCCESS;
-    extmodeSimulationTime_T currentTime = (extmodeSimulationTime_T)
-      (((arduino_motor_encoder_open_l_M->Timing.clockTick1+
-         arduino_motor_encoder_open_l_M->Timing.clockTickH1* 4294967296.0) * 1)
-       + 0)
-      ;
-
-    /* Trigger External Mode event */
-    errorCode = extmodeEvent(1,currentTime);
-    if (errorCode != EXTMODE_SUCCESS) {
-      /* Code to handle External Mode event errors
-         may be added here */
-    }
-  }
+  /* Update for UnitDelay: '<S10>/UD' */
+  arduino_motor_encoder_open_l_DW.UD_DSTATE_b = rtb_Switch_idx_1;
 
   /* Update absolute time for base rate */
   /* The "clockTick0" counts the number of times the code of this task has
    * been executed. The absolute time is the multiplication of "clockTick0"
    * and "Timing.stepSize0". Size of "clockTick0" ensures timer will not
    * overflow during the application lifespan selected.
-   * Timer of this task consists of two 32 bit unsigned integers.
-   * The two integers represent the low bits Timing.clockTick0 and the high bits
-   * Timing.clockTickH0. When the low bit overflows to 0, the high bits increment.
    */
-  if (!(++arduino_motor_encoder_open_l_M->Timing.clockTick0)) {
-    ++arduino_motor_encoder_open_l_M->Timing.clockTickH0;
-  }
-
-  arduino_motor_encoder_open_l_M->Timing.t[0] =
-    arduino_motor_encoder_open_l_M->Timing.clockTick0 *
-    arduino_motor_encoder_open_l_M->Timing.stepSize0 +
-    arduino_motor_encoder_open_l_M->Timing.clockTickH0 *
-    arduino_motor_encoder_open_l_M->Timing.stepSize0 * 4294967296.0;
-
-  {
-    /* Update absolute timer for sample time: [0.01s, 0.0s] */
-    /* The "clockTick1" counts the number of times the code of this task has
-     * been executed. The resolution of this integer timer is 0.01, which is the step size
-     * of the task. Size of "clockTick1" ensures timer will not overflow during the
-     * application lifespan selected.
-     * Timer of this task consists of two 32 bit unsigned integers.
-     * The two integers represent the low bits Timing.clockTick1 and the high bits
-     * Timing.clockTickH1. When the low bit overflows to 0, the high bits increment.
-     */
-    arduino_motor_encoder_open_l_M->Timing.clockTick1++;
-    if (!arduino_motor_encoder_open_l_M->Timing.clockTick1) {
-      arduino_motor_encoder_open_l_M->Timing.clockTickH1++;
-    }
-  }
+  arduino_motor_encoder_open_l_M->Timing.taskTime0 =
+    ((time_T)(++arduino_motor_encoder_open_l_M->Timing.clockTick0)) *
+    arduino_motor_encoder_open_l_M->Timing.stepSize0;
 }
 
 /* Model initialize function */
@@ -252,40 +275,19 @@ void arduino_motor_encoder_open_loop_initialize(void)
   /* initialize real-time model */
   (void) memset((void *)arduino_motor_encoder_open_l_M, 0,
                 sizeof(RT_MODEL_arduino_motor_encode_T));
-
-  {
-    /* Setup solver object */
-    rtsiSetSimTimeStepPtr(&arduino_motor_encoder_open_l_M->solverInfo,
-                          &arduino_motor_encoder_open_l_M->Timing.simTimeStep);
-    rtsiSetTPtr(&arduino_motor_encoder_open_l_M->solverInfo, &rtmGetTPtr
-                (arduino_motor_encoder_open_l_M));
-    rtsiSetStepSizePtr(&arduino_motor_encoder_open_l_M->solverInfo,
-                       &arduino_motor_encoder_open_l_M->Timing.stepSize0);
-    rtsiSetErrorStatusPtr(&arduino_motor_encoder_open_l_M->solverInfo,
-                          (&rtmGetErrorStatus(arduino_motor_encoder_open_l_M)));
-    rtsiSetRTModelPtr(&arduino_motor_encoder_open_l_M->solverInfo,
-                      arduino_motor_encoder_open_l_M);
-  }
-
-  rtsiSetSimTimeStep(&arduino_motor_encoder_open_l_M->solverInfo,
-                     MAJOR_TIME_STEP);
-  rtsiSetSolverName(&arduino_motor_encoder_open_l_M->solverInfo,
-                    "FixedStepDiscrete");
-  rtmSetTPtr(arduino_motor_encoder_open_l_M,
-             &arduino_motor_encoder_open_l_M->Timing.tArray[0]);
   rtmSetTFinal(arduino_motor_encoder_open_l_M, -1);
   arduino_motor_encoder_open_l_M->Timing.stepSize0 = 0.01;
 
   /* External mode info */
-  arduino_motor_encoder_open_l_M->Sizes.checksums[0] = (3984227725U);
-  arduino_motor_encoder_open_l_M->Sizes.checksums[1] = (3345834699U);
-  arduino_motor_encoder_open_l_M->Sizes.checksums[2] = (18470631U);
-  arduino_motor_encoder_open_l_M->Sizes.checksums[3] = (3802559994U);
+  arduino_motor_encoder_open_l_M->Sizes.checksums[0] = (4058607726U);
+  arduino_motor_encoder_open_l_M->Sizes.checksums[1] = (1528498908U);
+  arduino_motor_encoder_open_l_M->Sizes.checksums[2] = (3336934206U);
+  arduino_motor_encoder_open_l_M->Sizes.checksums[3] = (4172841976U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
     static RTWExtModeInfo rt_ExtModeInfo;
-    static const sysRanDType *systemRan[7];
+    static const sysRanDType *systemRan[13];
     arduino_motor_encoder_open_l_M->extModeInfo = (&rt_ExtModeInfo);
     rteiSetSubSystemActiveVectorAddresses(&rt_ExtModeInfo, systemRan);
     systemRan[0] = &rtAlwaysEnabled;
@@ -295,6 +297,12 @@ void arduino_motor_encoder_open_loop_initialize(void)
     systemRan[4] = &rtAlwaysEnabled;
     systemRan[5] = &rtAlwaysEnabled;
     systemRan[6] = &rtAlwaysEnabled;
+    systemRan[7] = &rtAlwaysEnabled;
+    systemRan[8] = &rtAlwaysEnabled;
+    systemRan[9] = &rtAlwaysEnabled;
+    systemRan[10] = &rtAlwaysEnabled;
+    systemRan[11] = &rtAlwaysEnabled;
+    systemRan[12] = &rtAlwaysEnabled;
     rteiSetModelMappingInfoPtr(arduino_motor_encoder_open_l_M->extModeInfo,
       &arduino_motor_encoder_open_l_M->SpecialInfo.mappingInfo);
     rteiSetChecksumsPtr(arduino_motor_encoder_open_l_M->extModeInfo,
@@ -311,88 +319,157 @@ void arduino_motor_encoder_open_loop_initialize(void)
   (void) memset((void *)&arduino_motor_encoder_open_l_DW, 0,
                 sizeof(DW_arduino_motor_encoder_open_T));
 
-  /* Start for MATLABSystem: '<S2>/IN1' */
-  arduino_motor_encoder_open_l_DW.obj_m.matlabCodegenIsDeleted = false;
-  arduino_motor_encoder_open_l_DW.objisempty_a = true;
-  arduino_motor_encoder_open_l_DW.obj_m.isInitialized = 1L;
-  digitalIOSetup(7, 1);
-  arduino_motor_encoder_open_l_DW.obj_m.isSetupComplete = true;
-
-  /* Start for MATLABSystem: '<S2>/IN2' */
-  arduino_motor_encoder_open_l_DW.obj_j.matlabCodegenIsDeleted = false;
-  arduino_motor_encoder_open_l_DW.objisempty = true;
-  arduino_motor_encoder_open_l_DW.obj_j.isInitialized = 1L;
-  digitalIOSetup(8, 1);
-  arduino_motor_encoder_open_l_DW.obj_j.isSetupComplete = true;
-
-  /* Start for MATLABSystem: '<S1>/Encoder' */
-  arduino_motor_encoder_open_l_DW.obj.Index = 0U;
-  arduino_motor_encoder_open_l_DW.obj.matlabCodegenIsDeleted = false;
-  arduino_motor_encoder_open_l_DW.objisempty_e = true;
-  arduino_motor_encoder_open_l_DW.obj.SampleTime =
-    arduino_motor_encoder_open_lo_P.Encoder_SampleTime;
-  arduino_motor_encoder_open_l_DW.obj.isInitialized = 1L;
-  MW_EncoderSetup(2UL, 3UL, &arduino_motor_encoder_open_l_DW.obj.Index);
-  arduino_motor_encoder_open_l_DW.obj.isSetupComplete = true;
-  arduino_motor_encoder_open_l_DW.obj.TunablePropsChanged = false;
-
-  /* Start for MATLABSystem: '<S2>/ENA1' */
-  arduino_motor_encoder_open_l_DW.obj_g.matlabCodegenIsDeleted = false;
-  arduino_motor_encoder_open_l_DW.objisempty_aw = true;
-  arduino_motor_encoder_open_l_DW.obj_g.isInitialized = 1L;
-  arduino_motor_encoder_open_l_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE = MW_PWM_Open
-    (6UL, 0.0, 0.0);
-  arduino_motor_encoder_open_l_DW.obj_g.isSetupComplete = true;
-
-  /* InitializeConditions for UnitDelay: '<S4>/UD' */
+  /* InitializeConditions for UnitDelay: '<S6>/UD' */
   arduino_motor_encoder_open_l_DW.UD_DSTATE =
     arduino_motor_encoder_open_lo_P.DiscreteDerivative_ICPrevScaled;
 
-  /* InitializeConditions for MATLABSystem: '<S1>/Encoder' */
-  MW_EncoderReset(arduino_motor_encoder_open_l_DW.obj.Index);
+  /* InitializeConditions for UnitDelay: '<S10>/UD' */
+  arduino_motor_encoder_open_l_DW.UD_DSTATE_b =
+    arduino_motor_encoder_open_lo_P.DiscreteDerivative_ICPrevScal_j;
+
+  /* Start for MATLABSystem: '<S4>/IN1' */
+  arduino_motor_encoder_open_l_DW.obj_o.matlabCodegenIsDeleted = false;
+  arduino_motor_encoder_open_l_DW.obj_o.isInitialized = 1;
+  digitalIOSetup(32, 1);
+  arduino_motor_encoder_open_l_DW.obj_o.isSetupComplete = true;
+
+  /* Start for MATLABSystem: '<S4>/IN2' */
+  arduino_motor_encoder_open_l_DW.obj_e.matlabCodegenIsDeleted = false;
+  arduino_motor_encoder_open_l_DW.obj_e.isInitialized = 1;
+  digitalIOSetup(33, 1);
+  arduino_motor_encoder_open_l_DW.obj_e.isSetupComplete = true;
+
+  /* Start for MATLABSystem: '<S3>/Encoder' */
+  arduino_motor_encoder_open_l_DW.obj_b.Index = 0U;
+  arduino_motor_encoder_open_l_DW.obj_b.matlabCodegenIsDeleted = false;
+  arduino_motor_encoder_open_l_DW.obj_b.isInitialized = 1;
+  MW_EncoderSetup(15U, 16U, &arduino_motor_encoder_open_l_DW.obj_b.Index);
+  arduino_motor_encoder_open_l_DW.obj_b.isSetupComplete = true;
+  arduino_motor_encoder_open_l_DW.obj_b.TunablePropsChanged = false;
+
+  /* InitializeConditions for MATLABSystem: '<S3>/Encoder' */
+  MW_EncoderReset(arduino_motor_encoder_open_l_DW.obj_b.Index);
+
+  /* Start for MATLABSystem: '<S4>/ENA1' */
+  arduino_motor_encoder_open_l_DW.obj_d.matlabCodegenIsDeleted = false;
+  arduino_motor_encoder_open_l_DW.obj_d.isInitialized = 1;
+  arduino_motor_encoder_open_l_DW.obj_d.PWMDriverObj.MW_PWM_HANDLE = MW_PWM_Open
+    (18U, 0.0, 0.0);
+  arduino_motor_encoder_open_l_DW.obj_d.isSetupComplete = true;
+
+  /* Start for MATLABSystem: '<S8>/IN3' */
+  arduino_motor_encoder_open_l_DW.obj_c.matlabCodegenIsDeleted = false;
+  arduino_motor_encoder_open_l_DW.obj_c.isInitialized = 1;
+  digitalIOSetup(19, 1);
+  arduino_motor_encoder_open_l_DW.obj_c.isSetupComplete = true;
+
+  /* Start for MATLABSystem: '<S8>/IN4' */
+  arduino_motor_encoder_open_l_DW.obj.matlabCodegenIsDeleted = false;
+  arduino_motor_encoder_open_l_DW.obj.isInitialized = 1;
+  digitalIOSetup(25, 1);
+  arduino_motor_encoder_open_l_DW.obj.isSetupComplete = true;
+
+  /* Start for MATLABSystem: '<S7>/Encoder' */
+  arduino_motor_encoder_open_l_DW.obj_l.Index = 0U;
+  arduino_motor_encoder_open_l_DW.obj_l.matlabCodegenIsDeleted = false;
+  arduino_motor_encoder_open_l_DW.obj_l.isInitialized = 1;
+  MW_EncoderSetup(5U, 4U, &arduino_motor_encoder_open_l_DW.obj_l.Index);
+  arduino_motor_encoder_open_l_DW.obj_l.isSetupComplete = true;
+  arduino_motor_encoder_open_l_DW.obj_l.TunablePropsChanged = false;
+
+  /* InitializeConditions for MATLABSystem: '<S7>/Encoder' */
+  MW_EncoderReset(arduino_motor_encoder_open_l_DW.obj_l.Index);
+
+  /* Start for MATLABSystem: '<S8>/ENB' */
+  arduino_motor_encoder_open_l_DW.obj_p.matlabCodegenIsDeleted = false;
+  arduino_motor_encoder_open_l_DW.obj_p.isInitialized = 1;
+  arduino_motor_encoder_open_l_DW.obj_p.PWMDriverObj.MW_PWM_HANDLE = MW_PWM_Open
+    (26U, 0.0, 0.0);
+  arduino_motor_encoder_open_l_DW.obj_p.isSetupComplete = true;
 }
 
 /* Model terminate function */
 void arduino_motor_encoder_open_loop_terminate(void)
 {
-  /* Terminate for MATLABSystem: '<S2>/IN1' */
-  if (!arduino_motor_encoder_open_l_DW.obj_m.matlabCodegenIsDeleted) {
-    arduino_motor_encoder_open_l_DW.obj_m.matlabCodegenIsDeleted = true;
+  /* Terminate for MATLABSystem: '<S4>/IN1' */
+  if (!arduino_motor_encoder_open_l_DW.obj_o.matlabCodegenIsDeleted) {
+    arduino_motor_encoder_open_l_DW.obj_o.matlabCodegenIsDeleted = true;
   }
 
-  /* End of Terminate for MATLABSystem: '<S2>/IN1' */
+  /* End of Terminate for MATLABSystem: '<S4>/IN1' */
 
-  /* Terminate for MATLABSystem: '<S2>/IN2' */
-  if (!arduino_motor_encoder_open_l_DW.obj_j.matlabCodegenIsDeleted) {
-    arduino_motor_encoder_open_l_DW.obj_j.matlabCodegenIsDeleted = true;
+  /* Terminate for MATLABSystem: '<S4>/IN2' */
+  if (!arduino_motor_encoder_open_l_DW.obj_e.matlabCodegenIsDeleted) {
+    arduino_motor_encoder_open_l_DW.obj_e.matlabCodegenIsDeleted = true;
   }
 
-  /* End of Terminate for MATLABSystem: '<S2>/IN2' */
-  /* Terminate for MATLABSystem: '<S1>/Encoder' */
-  if (!arduino_motor_encoder_open_l_DW.obj.matlabCodegenIsDeleted) {
-    arduino_motor_encoder_open_l_DW.obj.matlabCodegenIsDeleted = true;
-    if ((arduino_motor_encoder_open_l_DW.obj.isInitialized == 1L) &&
-        arduino_motor_encoder_open_l_DW.obj.isSetupComplete) {
+  /* End of Terminate for MATLABSystem: '<S4>/IN2' */
+  /* Terminate for MATLABSystem: '<S3>/Encoder' */
+  if (!arduino_motor_encoder_open_l_DW.obj_b.matlabCodegenIsDeleted) {
+    arduino_motor_encoder_open_l_DW.obj_b.matlabCodegenIsDeleted = true;
+    if ((arduino_motor_encoder_open_l_DW.obj_b.isInitialized == 1) &&
+        arduino_motor_encoder_open_l_DW.obj_b.isSetupComplete) {
       MW_EncoderRelease();
     }
   }
 
-  /* End of Terminate for MATLABSystem: '<S1>/Encoder' */
-  /* Terminate for MATLABSystem: '<S2>/ENA1' */
-  if (!arduino_motor_encoder_open_l_DW.obj_g.matlabCodegenIsDeleted) {
-    arduino_motor_encoder_open_l_DW.obj_g.matlabCodegenIsDeleted = true;
-    if ((arduino_motor_encoder_open_l_DW.obj_g.isInitialized == 1L) &&
-        arduino_motor_encoder_open_l_DW.obj_g.isSetupComplete) {
-      arduino_motor_encoder_open_l_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE =
-        MW_PWM_GetHandle(6UL);
+  /* End of Terminate for MATLABSystem: '<S3>/Encoder' */
+  /* Terminate for MATLABSystem: '<S4>/ENA1' */
+  if (!arduino_motor_encoder_open_l_DW.obj_d.matlabCodegenIsDeleted) {
+    arduino_motor_encoder_open_l_DW.obj_d.matlabCodegenIsDeleted = true;
+    if ((arduino_motor_encoder_open_l_DW.obj_d.isInitialized == 1) &&
+        arduino_motor_encoder_open_l_DW.obj_d.isSetupComplete) {
+      arduino_motor_encoder_open_l_DW.obj_d.PWMDriverObj.MW_PWM_HANDLE =
+        MW_PWM_GetHandle(18U);
       MW_PWM_SetDutyCycle
-        (arduino_motor_encoder_open_l_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE, 0.0);
-      arduino_motor_encoder_open_l_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE =
-        MW_PWM_GetHandle(6UL);
+        (arduino_motor_encoder_open_l_DW.obj_d.PWMDriverObj.MW_PWM_HANDLE, 0.0);
+      arduino_motor_encoder_open_l_DW.obj_d.PWMDriverObj.MW_PWM_HANDLE =
+        MW_PWM_GetHandle(18U);
       MW_PWM_Close
-        (arduino_motor_encoder_open_l_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE);
+        (arduino_motor_encoder_open_l_DW.obj_d.PWMDriverObj.MW_PWM_HANDLE);
     }
   }
 
-  /* End of Terminate for MATLABSystem: '<S2>/ENA1' */
+  /* End of Terminate for MATLABSystem: '<S4>/ENA1' */
+
+  /* Terminate for MATLABSystem: '<S8>/IN3' */
+  if (!arduino_motor_encoder_open_l_DW.obj_c.matlabCodegenIsDeleted) {
+    arduino_motor_encoder_open_l_DW.obj_c.matlabCodegenIsDeleted = true;
+  }
+
+  /* End of Terminate for MATLABSystem: '<S8>/IN3' */
+
+  /* Terminate for MATLABSystem: '<S8>/IN4' */
+  if (!arduino_motor_encoder_open_l_DW.obj.matlabCodegenIsDeleted) {
+    arduino_motor_encoder_open_l_DW.obj.matlabCodegenIsDeleted = true;
+  }
+
+  /* End of Terminate for MATLABSystem: '<S8>/IN4' */
+  /* Terminate for MATLABSystem: '<S7>/Encoder' */
+  if (!arduino_motor_encoder_open_l_DW.obj_l.matlabCodegenIsDeleted) {
+    arduino_motor_encoder_open_l_DW.obj_l.matlabCodegenIsDeleted = true;
+    if ((arduino_motor_encoder_open_l_DW.obj_l.isInitialized == 1) &&
+        arduino_motor_encoder_open_l_DW.obj_l.isSetupComplete) {
+      MW_EncoderRelease();
+    }
+  }
+
+  /* End of Terminate for MATLABSystem: '<S7>/Encoder' */
+  /* Terminate for MATLABSystem: '<S8>/ENB' */
+  if (!arduino_motor_encoder_open_l_DW.obj_p.matlabCodegenIsDeleted) {
+    arduino_motor_encoder_open_l_DW.obj_p.matlabCodegenIsDeleted = true;
+    if ((arduino_motor_encoder_open_l_DW.obj_p.isInitialized == 1) &&
+        arduino_motor_encoder_open_l_DW.obj_p.isSetupComplete) {
+      arduino_motor_encoder_open_l_DW.obj_p.PWMDriverObj.MW_PWM_HANDLE =
+        MW_PWM_GetHandle(26U);
+      MW_PWM_SetDutyCycle
+        (arduino_motor_encoder_open_l_DW.obj_p.PWMDriverObj.MW_PWM_HANDLE, 0.0);
+      arduino_motor_encoder_open_l_DW.obj_p.PWMDriverObj.MW_PWM_HANDLE =
+        MW_PWM_GetHandle(26U);
+      MW_PWM_Close
+        (arduino_motor_encoder_open_l_DW.obj_p.PWMDriverObj.MW_PWM_HANDLE);
+    }
+  }
+
+  /* End of Terminate for MATLABSystem: '<S8>/ENB' */
 }

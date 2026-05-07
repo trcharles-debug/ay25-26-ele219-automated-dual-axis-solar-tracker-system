@@ -135,8 +135,9 @@ int main(void)
   sei ();
 
   /* External Mode initialization */
-  errorCode = extmodeInit(motor_position_control_M->extModeInfo, &rtmGetTFinal
-    (motor_position_control_M));
+  errorCode = extmodeInit(motor_position_control_M->extModeInfo,
+    (extmodeSimulationTime_T *)rteiGetPtrTFinalTicks
+    (motor_position_control_M->extModeInfo));
   if (errorCode != EXTMODE_SUCCESS) {
     /* Code to handle External Mode initialization errors
        may be added here */
@@ -152,7 +153,8 @@ int main(void)
 
   cli();
   configureArduinoAVRTimer();
-  runModel = !extmodeSimulationComplete() && !extmodeStopRequested() &&
+  runModel =
+    !extmodeSimulationComplete()&& !extmodeStopRequested()&&
     !rtmGetStopRequested(motor_position_control_M);
 
 #ifndef _MW_ARDUINO_LOOP_
@@ -166,12 +168,13 @@ int main(void)
   while (runModel) {
     /* Run External Mode background activities */
     errorCode = extmodeBackgroundRun();
-    if (errorCode != EXTMODE_SUCCESS) {
+    if (errorCode != EXTMODE_SUCCESS && errorCode != EXTMODE_EMPTY) {
       /* Code to handle External Mode background task errors
          may be added here */
     }
 
-    stopRequested = !(!extmodeSimulationComplete() && !extmodeStopRequested() &&
+    stopRequested = !(
+                      !extmodeSimulationComplete()&& !extmodeStopRequested()&&
                       !rtmGetStopRequested(motor_position_control_M));
     runModel = !(stopRequested);
     if (stopRequested)

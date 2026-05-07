@@ -4,17 +4,17 @@
  * Code generated for Simulink model 'arduino_encoder'.
  *
  * Model version                  : 1.14
- * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Tue Apr 21 21:51:39 2026
+ * Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+ * C/C++ source code generated on : Wed May  6 01:24:42 2026
  *
  * Target selection: ert.tlc
- * Embedded hardware selection: Atmel->AVR
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_arduino_encoder_h_
-#define RTW_HEADER_arduino_encoder_h_
+#ifndef arduino_encoder_h_
+#define arduino_encoder_h_
 #ifndef arduino_encoder_COMMON_INCLUDES_
 #define arduino_encoder_COMMON_INCLUDES_
 #include "rtwtypes.h"
@@ -26,7 +26,7 @@
 #endif                                 /* arduino_encoder_COMMON_INCLUDES_ */
 
 #include "arduino_encoder_types.h"
-#include "MW_target_hardware_resources.h"
+#include <stddef.h>
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetFinalTime
@@ -71,23 +71,16 @@
 
 /* Block signals (default storage) */
 typedef struct {
-  int32_T Encoder;                     /* '<S1>/Encoder' */
+  int32_T Encoder;                     /* '<Root>/Encoder' */
 } B_arduino_encoder_T;
 
 /* Block states (default storage) for system '<Root>' */
 typedef struct {
-  codertarget_arduinobase_inter_T obj; /* '<S1>/Encoder' */
+  codertarget_arduinobase_inter_T obj; /* '<Root>/Encoder' */
   struct {
     void *LoggedData;
   } Scope_PWORK;                       /* '<Root>/Scope' */
 } DW_arduino_encoder_T;
-
-/* Parameters (default storage) */
-struct P_arduino_encoder_T_ {
-  real_T Encoder_SampleTime;           /* Expression: 0.1
-                                        * Referenced by: '<S1>/Encoder'
-                                        */
-};
 
 /* Real-time Model Data Structure */
 struct tag_RTM_arduino_encoder_T {
@@ -127,9 +120,6 @@ struct tag_RTM_arduino_encoder_T {
   } Timing;
 };
 
-/* Block parameters (default storage) */
-extern P_arduino_encoder_T arduino_encoder_P;
-
 /* Block signals (default storage) */
 extern B_arduino_encoder_T arduino_encoder_B;
 
@@ -161,9 +151,8 @@ extern volatile boolean_T runModel;
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'arduino_encoder'
- * '<S1>'   : 'arduino_encoder/Encoder_Right'
  */
-#endif                                 /* RTW_HEADER_arduino_encoder_h_ */
+#endif                                 /* arduino_encoder_h_ */
 
 /*
  * File trailer for generated code.

@@ -3,19 +3,18 @@
  *
  * Code generation for model "arduino_motor_encoder_open_loop".
  *
- * Model version              : 1.96
- * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Wed Apr 22 20:11:51 2026
+ * Model version              : 3.7
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Tue May  5 22:26:30 2026
  *
  * Target selection: ert.tlc
- * Note: GRT includes extra infrastructure and instrumentation for prototyping
- * Embedded hardware selection: Atmel->AVR
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_arduino_motor_encoder_open_loop_h_
-#define RTW_HEADER_arduino_motor_encoder_open_loop_h_
+#ifndef arduino_motor_encoder_open_loop_h_
+#define arduino_motor_encoder_open_loop_h_
 #ifndef arduino_motor_encoder_open_loop_COMMON_INCLUDES_
 #define arduino_motor_encoder_open_loop_COMMON_INCLUDES_
 #include "rtwtypes.h"
@@ -23,7 +22,6 @@
 #include "sysran_types.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#include "ext_mode.h"
 #include "MW_ArduinoEncoder.h"
 #include "MW_PWM.h"
 #include "MW_arduino_digitalio.h"
@@ -32,7 +30,7 @@
 #include "arduino_motor_encoder_open_loop_types.h"
 #include <string.h>
 #include "rt_nonfinite.h"
-#include "MW_target_hardware_resources.h"
+#include <stddef.h>
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetFinalTime
@@ -64,7 +62,7 @@
 #endif
 
 #ifndef rtmGetT
-#define rtmGetT(rtm)                   (rtmGetTPtr((rtm))[0])
+#define rtmGetT(rtm)                   ((rtm)->Timing.taskTime0)
 #endif
 
 #ifndef rtmGetTFinal
@@ -72,75 +70,103 @@
 #endif
 
 #ifndef rtmGetTPtr
-#define rtmGetTPtr(rtm)                ((rtm)->Timing.t)
+#define rtmGetTPtr(rtm)                (&(rtm)->Timing.taskTime0)
 #endif
 
 #define arduino_motor_encoder_open_loop_M (arduino_motor_encoder_open_l_M)
 
 /* Block signals (default storage) */
 typedef struct {
-  real_T Step;                         /* '<Root>/Step' */
-  real_T radsToRPM;                    /* '<Root>/rad//sToRPM' */
+  real_T Constant;                     /* '<Root>/Constant' */
+  real_T radsToRPM;                    /* '<S1>/rad//s To RPM' */
+  real_T Constant1;                    /* '<Root>/Constant1' */
+  real_T radsToRPM_k;                  /* '<S2>/rad//s To RPM' */
 } B_arduino_motor_encoder_open__T;
 
 /* Block states (default storage) for system '<Root>' */
 typedef struct {
-  codertarget_arduinobase_inter_T obj; /* '<S1>/Encoder' */
-  codertarget_arduinobase_int_i_T obj_g;/* '<S2>/ENA1' */
-  codertarget_arduinobase_block_T obj_j;/* '<S2>/IN2' */
-  codertarget_arduinobase_block_T obj_m;/* '<S2>/IN1' */
-  real_T UD_DSTATE;                    /* '<S4>/UD' */
+  codertarget_arduinobase_block_T obj; /* '<S8>/IN4' */
+  codertarget_arduinobase_block_T obj_c;/* '<S8>/IN3' */
+  codertarget_arduinobase_block_T obj_e;/* '<S4>/IN2' */
+  codertarget_arduinobase_block_T obj_o;/* '<S4>/IN1' */
+  codertarget_arduinobase_inter_T obj_l;/* '<S7>/Encoder' */
+  codertarget_arduinobase_inter_T obj_b;/* '<S3>/Encoder' */
+  codertarget_arduinobase_int_i_T obj_p;/* '<S8>/ENB' */
+  codertarget_arduinobase_int_i_T obj_d;/* '<S4>/ENA1' */
+  real_T UD_DSTATE;                    /* '<S6>/UD' */
+  real_T UD_DSTATE_b;                  /* '<S10>/UD' */
+  struct {
+    void *LoggedData[2];
+  } Scope1_PWORK;                      /* '<Root>/Scope1' */
+
   struct {
     void *LoggedData[2];
   } Scope_PWORK;                       /* '<Root>/Scope' */
-
-  boolean_T objisempty;                /* '<S2>/IN2' */
-  boolean_T objisempty_a;              /* '<S2>/IN1' */
-  boolean_T objisempty_aw;             /* '<S2>/ENA1' */
-  boolean_T objisempty_e;              /* '<S1>/Encoder' */
 } DW_arduino_motor_encoder_open_T;
 
 /* Parameters (default storage) */
 struct P_arduino_motor_encoder_open__T_ {
   real_T DiscreteDerivative_ICPrevScaled;
                               /* Mask Parameter: DiscreteDerivative_ICPrevScaled
-                               * Referenced by: '<S4>/UD'
+                               * Referenced by: '<S6>/UD'
                                */
-  real_T Encoder_SampleTime;           /* Expression: 0.01
-                                        * Referenced by: '<S1>/Encoder'
-                                        */
+  real_T DiscreteDerivative_ICPrevScal_j;
+                              /* Mask Parameter: DiscreteDerivative_ICPrevScal_j
+                               * Referenced by: '<S10>/UD'
+                               */
   real_T Constant2_Value;              /* Expression: 0
-                                        * Referenced by: '<S2>/Constant2'
+                                        * Referenced by: '<S4>/Constant2'
                                         */
   real_T Constant1_Value;              /* Expression: 1
-                                        * Referenced by: '<S2>/Constant1'
+                                        * Referenced by: '<S4>/Constant1'
                                         */
   real_T Constant5_Value;              /* Expression: 1
-                                        * Referenced by: '<S2>/Constant5'
+                                        * Referenced by: '<S4>/Constant5'
                                         */
   real_T Constant4_Value;              /* Expression: 0
-                                        * Referenced by: '<S2>/Constant4'
+                                        * Referenced by: '<S4>/Constant4'
                                         */
-  real_T Step_Time;                    /* Expression: 5
-                                        * Referenced by: '<Root>/Step'
+  real_T Constant2_Value_d;            /* Expression: 0
+                                        * Referenced by: '<S8>/Constant2'
                                         */
-  real_T Step_Y0;                      /* Expression: 0
-                                        * Referenced by: '<Root>/Step'
+  real_T Constant1_Value_l;            /* Expression: 1
+                                        * Referenced by: '<S8>/Constant1'
                                         */
-  real_T Step_YFinal;                  /* Expression: 255
-                                        * Referenced by: '<Root>/Step'
+  real_T Constant5_Value_e;            /* Expression: 1
+                                        * Referenced by: '<S8>/Constant5'
+                                        */
+  real_T Constant4_Value_p;            /* Expression: 0
+                                        * Referenced by: '<S8>/Constant4'
+                                        */
+  real_T Constant_Value;               /* Expression: 0
+                                        * Referenced by: '<Root>/Constant'
                                         */
   real_T Switch_Threshold;             /* Expression: 0
-                                        * Referenced by: '<S2>/Switch'
+                                        * Referenced by: '<S4>/Switch'
                                         */
   real_T Gear_Ratio_Gain;              /* Expression: 2*pi/(169*64)
-                                        * Referenced by: '<S1>/Gear_Ratio'
+                                        * Referenced by: '<S3>/Gear_Ratio'
                                         */
   real_T TSamp_WtEt;                   /* Computed Parameter: TSamp_WtEt
-                                        * Referenced by: '<S4>/TSamp'
+                                        * Referenced by: '<S6>/TSamp'
                                         */
   real_T radsToRPM_Gain;               /* Expression: 2*pi/60
-                                        * Referenced by: '<Root>/rad//sToRPM'
+                                        * Referenced by: '<S1>/rad//s To RPM'
+                                        */
+  real_T Constant1_Value_g;            /* Expression: 0
+                                        * Referenced by: '<Root>/Constant1'
+                                        */
+  real_T Switch_Threshold_k;           /* Expression: 0
+                                        * Referenced by: '<S8>/Switch'
+                                        */
+  real_T Gear_Ratio_Gain_m;            /* Expression: 2*pi/(169*64)
+                                        * Referenced by: '<S7>/Gear_Ratio'
+                                        */
+  real_T TSamp_WtEt_k;                 /* Computed Parameter: TSamp_WtEt_k
+                                        * Referenced by: '<S10>/TSamp'
+                                        */
+  real_T radsToRPM_Gain_n;             /* Expression: 2*pi/60
+                                        * Referenced by: '<S2>/rad//s To RPM'
                                         */
 };
 
@@ -148,7 +174,6 @@ struct P_arduino_motor_encoder_open__T_ {
 struct tag_RTM_arduino_motor_encoder_T {
   const char_T *errorStatus;
   RTWExtModeInfo *extModeInfo;
-  RTWSolverInfo solverInfo;
 
   /*
    * Sizes:
@@ -175,16 +200,11 @@ struct tag_RTM_arduino_motor_encoder_T {
    * the timing information for the model.
    */
   struct {
+    time_T taskTime0;
     uint32_T clockTick0;
-    uint32_T clockTickH0;
     time_T stepSize0;
-    uint32_T clockTick1;
-    uint32_T clockTickH1;
     time_T tFinal;
-    SimTimeStep simTimeStep;
     boolean_T stopRequestedFlag;
-    time_T *t;
-    time_T tArray[2];
   } Timing;
 };
 
@@ -210,9 +230,10 @@ extern volatile boolean_T runModel;
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<S4>/Data Type Duplicate' : Unused code path elimination
- * Block '<S3>/Gain' : Unused code path elimination
- * Block '<Root>/Sine Wave' : Unused code path elimination
+ * Block '<S6>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S5>/Gain' : Unused code path elimination
+ * Block '<S10>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S9>/Gain' : Unused code path elimination
  */
 
 /*-
@@ -230,9 +251,15 @@ extern volatile boolean_T runModel;
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'arduino_motor_encoder_open_loop'
- * '<S1>'   : 'arduino_motor_encoder_open_loop/Azimut Encoder'
- * '<S2>'   : 'arduino_motor_encoder_open_loop/Azimut Motor'
- * '<S3>'   : 'arduino_motor_encoder_open_loop/Radians to Degrees'
- * '<S4>'   : 'arduino_motor_encoder_open_loop/Azimut Encoder/Discrete Derivative'
+ * '<S1>'   : 'arduino_motor_encoder_open_loop/Azimuth Motor'
+ * '<S2>'   : 'arduino_motor_encoder_open_loop/Elevator Motor1'
+ * '<S3>'   : 'arduino_motor_encoder_open_loop/Azimuth Motor/Azimuth Encoder'
+ * '<S4>'   : 'arduino_motor_encoder_open_loop/Azimuth Motor/Azimuth Motor'
+ * '<S5>'   : 'arduino_motor_encoder_open_loop/Azimuth Motor/Radians to Degrees'
+ * '<S6>'   : 'arduino_motor_encoder_open_loop/Azimuth Motor/Azimuth Encoder/Discrete Derivative'
+ * '<S7>'   : 'arduino_motor_encoder_open_loop/Elevator Motor1/Elevator Encoder'
+ * '<S8>'   : 'arduino_motor_encoder_open_loop/Elevator Motor1/Elevator Motor'
+ * '<S9>'   : 'arduino_motor_encoder_open_loop/Elevator Motor1/Radians to Degrees'
+ * '<S10>'  : 'arduino_motor_encoder_open_loop/Elevator Motor1/Elevator Encoder/Discrete Derivative'
  */
-#endif                       /* RTW_HEADER_arduino_motor_encoder_open_loop_h_ */
+#endif                                 /* arduino_motor_encoder_open_loop_h_ */

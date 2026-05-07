@@ -3,8 +3,8 @@
  *
  * Code generation for Simulink model "arduino_motor_encoder_open_loop".
  *
- * Simulink Coder version                : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Wed Apr 22 20:11:51 2026
+ * Simulink Coder version                : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Tue May  5 22:26:30 2026
  *
  * Note that the generated code is not dependent on this header file.
  * The file is used in cojuction with the automatic build procedure.
@@ -13,7 +13,7 @@
  *
  */
 
-#ifndef RTW_HEADER_rtmodel_h_
-#define RTW_HEADER_rtmodel_h_
+#ifndef rtmodel_h_
+#define rtmodel_h_
 #include "arduino_motor_encoder_open_loop.h"
-#endif                                 /* RTW_HEADER_rtmodel_h_ */
+#endif                                 /* rtmodel_h_ */

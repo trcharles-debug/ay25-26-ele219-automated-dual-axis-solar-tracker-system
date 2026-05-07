@@ -1,66 +1,114 @@
-#include "arduino_motor_encoder_open_loop.h"
-#include "rtwtypes.h"
-#include "xcp.h"
-#include "ext_mode.h"
-#include "MW_target_hardware_resources.h"
+/*
+ * ert_main.c
+ *
+ * Code generation for model "arduino_motor_encoder_open_loop".
+ *
+ * Model version              : 3.7
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Tue May  5 22:26:30 2026
+ *
+ * Target selection: ert.tlc
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
+ * Code generation objectives: Unspecified
+ * Validation result: Not run
+ */
 
-volatile int IsrOverrun = 0;
-static boolean_T OverrunFlag = 0;
-void rt_OneStep(void)
+#include <stdio.h>
+#include <stdlib.h>
+#include "arduino_motor_encoder_open_loop.h"
+#include "arduino_motor_encoder_open_loop_private.h"
+#include "rtwtypes.h"
+#include "limits.h"
+#include "rt_nonfinite.h"
+#include "ext_mode.h"
+#include "MW_ArduinoHWInit.h"
+#include "mw_freertos.h"
+#define UNUSED(x)                      x = x
+#define NAMELEN                        16
+
+/* Function prototype declaration*/
+void exitFcn(int sig);
+void *terminateTask(void *arg);
+void *baseRateTask(void *arg);
+void *subrateTask(void *arg);
+volatile boolean_T stopRequested = false;
+volatile boolean_T runModel = true;
+extmodeErrorCode_T errorCode;
+SemaphoreHandle_t stopSem;
+SemaphoreHandle_t baserateTaskSem;
+mw_thread_t schedulerThread;
+mw_thread_t baseRateThread;
+void *threadJoinStatus;
+int terminatingmodel = 0;
+void *baseRateTask(void *arg)
 {
-  /* Check for overrun. Protect OverrunFlag against preemption */
-  if (OverrunFlag++) {
-    IsrOverrun = 1;
-    OverrunFlag--;
-    return;
+  runModel = (rtmGetErrorStatus(arduino_motor_encoder_open_l_M) == (NULL));
+  while (runModel) {
+    mw_osSemaphoreWaitEver(&baserateTaskSem);
+    extmodeSimulationTime_T currentTime = (extmodeSimulationTime_T)
+      arduino_motor_encoder_open_l_M->Timing.taskTime0;
+
+    /* Run External Mode background activities */
+    errorCode = extmodeBackgroundRun();
+    if (errorCode != EXTMODE_SUCCESS && errorCode != EXTMODE_EMPTY) {
+      /* Code to handle External Mode background task errors
+         may be added here */
+    }
+
+    arduino_motor_encoder_open_loop_step();
+
+    /* Get model outputs here */
+
+    /* Trigger External Mode event */
+    extmodeEvent(0, currentTime);
+    stopRequested = !((rtmGetErrorStatus(arduino_motor_encoder_open_l_M) ==
+                       (NULL)));
+    runModel = !stopRequested && !extmodeSimulationComplete() &&
+      !extmodeStopRequested();
   }
 
-#ifndef _MW_ARDUINO_LOOP_
-
-  sei();
-
-#endif;
-
-  arduino_motor_encoder_open_loop_step();
-
-  /* Get model outputs here */
-#ifndef _MW_ARDUINO_LOOP_
-
-  cli();
-
-#endif;
-
-  OverrunFlag--;
+  runModel = 0;
+  terminateTask(arg);
+  mw_osThreadExit((void *)0);
+  return NULL;
 }
 
-extern void rtIOStreamResync();
-volatile boolean_T stopRequested;
-volatile boolean_T runModel;
-int main(void)
+void exitFcn(int sig)
 {
-  float modelBaseRate = 0.01;
-  float systemClock = 0;
-  extmodeErrorCode_T errorCode = EXTMODE_SUCCESS;
+  UNUSED(sig);
+  rtmSetErrorStatus(arduino_motor_encoder_open_l_M, "stopping the model");
+}
 
-  /* Initialize variables */
-  stopRequested = false;
-  runModel = false;
+void *terminateTask(void *arg)
+{
+  UNUSED(arg);
+  terminatingmodel = 1;
+
+  {
+    runModel = 0;
+  }
+
+  /* Terminate model */
+  arduino_motor_encoder_open_loop_terminate();
+  extmodeReset();
+  mw_osSemaphoreRelease(&stopSem);
+  return NULL;
+}
+
+int app_main(int argc, char **argv)
+{
   init();
   MW_Arduino_Init();
   rtmSetErrorStatus(arduino_motor_encoder_open_l_M, 0);
 
-  /* Set Final Simulation Time in Ticks */
-  errorCode = extmodeSetFinalSimulationTime((extmodeSimulationTime_T) -1);
-
   /* Parse External Mode command line arguments */
-  errorCode = extmodeParseArgs(0, NULL);
+  errorCode = extmodeParseArgs(argc, (const char_T **)argv);
   if (errorCode != EXTMODE_SUCCESS) {
     return (errorCode);
   }
 
+  /* Initialize model */
   arduino_motor_encoder_open_loop_initialize();
-  cli();
-  sei ();
 
   /* External Mode initialization */
   errorCode = extmodeInit(arduino_motor_encoder_open_l_M->extModeInfo,
@@ -78,43 +126,23 @@ int main(void)
     }
   }
 
-  cli();
-  configureArduinoAVRTimer();
-  runModel = !extmodeSimulationComplete() && !extmodeStopRequested() &&
-    !rtmGetStopRequested(arduino_motor_encoder_open_l_M);
+  /* Call RTOS Initialization function */
+  mw_RTOSInit(0.01, 0);
 
-#ifndef _MW_ARDUINO_LOOP_
+  /* Wait for stop semaphore */
+  mw_osSemaphoreWaitEver(&stopSem);
 
-  sei();
+#if (MW_NUMBER_TIMER_DRIVEN_TASKS > 0)
 
-#endif;
-
-  XcpStatus lastXcpState = xcpStatusGet();
-  sei ();
-  while (runModel) {
-    /* Run External Mode background activities */
-    errorCode = extmodeBackgroundRun();
-    if (errorCode != EXTMODE_SUCCESS) {
-      /* Code to handle External Mode background task errors
-         may be added here */
+  {
+    int i;
+    for (i=0; i < MW_NUMBER_TIMER_DRIVEN_TASKS; i++) {
+      CHECK_STATUS(mw_osSemaphoreDelete(&timerTaskSem[i]), 0,
+                   "mw_osSemaphoreDelete");
     }
-
-    stopRequested = !(!extmodeSimulationComplete() && !extmodeStopRequested() &&
-                      !rtmGetStopRequested(arduino_motor_encoder_open_l_M));
-    runModel = !(stopRequested);
-    if (stopRequested)
-      disable_rt_OneStep();
-    if (lastXcpState==XCP_CONNECTED && xcpStatusGet()==XCP_DISCONNECTED)
-      rtIOStreamResync();
-    lastXcpState = xcpStatusGet();
-    MW_Arduino_Loop();
   }
 
-  /* Terminate model */
-  arduino_motor_encoder_open_loop_terminate();
+#endif
 
-  /* External Mode reset */
-  extmodeReset();
-  cli();
   return 0;
 }

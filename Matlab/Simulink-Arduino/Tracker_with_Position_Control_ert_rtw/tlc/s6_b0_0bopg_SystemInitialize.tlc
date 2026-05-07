@@ -1,0 +1,27 @@
+%implements s6_b0_0bopg_SystemInitialize "C"
+
+%function SystemInitialize(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%<SLibInsertAsyncTaskInitializeCode(system)>
+%<SLibWriteMachineInitialize()>
+/* InitializeConditions for DiscreteIntegrator: '<S41>/Integrator' */
+Tracker_with_Position_Contro_DW.Integrator_DSTATE = Tracker_with_Position_Control_P.PIDController_InitialConditio_f;
+/* InitializeConditions for DiscreteIntegrator: '<S36>/Filter' */
+Tracker_with_Position_Contro_DW.Filter_DSTATE = Tracker_with_Position_Control_P.PIDController_InitialConditionF;
+/* InitializeConditions for MATLABSystem: '<S3>/Encoder' */
+MW_EncoderReset(Tracker_with_Position_Contro_DW.obj.Index);
+%<SLibInsertInitPeriodicCStatesFcn(system)>
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedSystemInitializeLocalVars", localVarDecl)>
+%endfunction
+%function SystemInitializeFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void SystemInitialize(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 2, fcnProtoType)>
+%endfunction

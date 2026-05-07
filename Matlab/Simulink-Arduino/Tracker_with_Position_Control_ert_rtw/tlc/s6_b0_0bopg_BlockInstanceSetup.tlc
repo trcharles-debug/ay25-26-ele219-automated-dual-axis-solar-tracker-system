@@ -1,0 +1,11 @@
+%implements s6_b0_0bopg_BlockInstanceSetup "C"
+
+%function BlockInstanceSetup(block, system) Output
+%% Subsystems with iterators in IR:
+%% TLC Block Registration buffer:
+%<LibAddToCommonIncludes("MW_ArduinoEncoder.h")>
+%<LibAddToCommonIncludes("MW_PWM.h")>
+%<LibAddToCommonIncludes("MW_arduino_digitalio.h")>
+%<LibAddToCommonIncludes("MW_arduino_digitalio.h")>
+%% END  Block Registration buffer
+%endfunction

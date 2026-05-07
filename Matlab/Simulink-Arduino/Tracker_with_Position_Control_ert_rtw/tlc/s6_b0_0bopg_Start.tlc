@@ -1,0 +1,78 @@
+%implements s6_b0_0bopg_Start "C"
+
+%function Start(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcSetupRuntimeResourcesFcnOfS6B6 = OpaqueTLCBlockFcn("SetupRuntimeResources", 6, 6, 0, 1, 0)
+%assign tlcSetupRuntimeResourcesFcnOfS6B7 = OpaqueTLCBlockFcn("SetupRuntimeResources", 6, 7, 0, 1, 1)
+%assign tlcSetupRuntimeResourcesFcnOfS6B8 = OpaqueTLCBlockFcn("SetupRuntimeResources", 6, 8, 0, 1, 2)
+%assign tlcSetupRuntimeResourcesFcnOfS6B9 = OpaqueTLCBlockFcn("SetupRuntimeResources", 6, 9, 0, 1, 3)
+%assign tlcStartFcnOfS6B7 = OpaqueTLCBlockFcn("Start", 6, 7, 0, 1, 4)
+%assign tlcStartFcnOfS6B8 = OpaqueTLCBlockFcn("Start", 6, 8, 0, 1, 5)
+%assign tlcStartFcnOfS6B9 = OpaqueTLCBlockFcn("Start", 6, 9, 0, 1, 6)
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS6B6)
+/* SetupRuntimeResources for Scope: '<Root>/Scope' */
+%<tlcSetupRuntimeResourcesFcnOfS6B6>\
+%endif
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS6B7)
+/* SetupRuntimeResources for ToAsyncQueueBlock generated from: '<Root>/Sum' */
+%<tlcSetupRuntimeResourcesFcnOfS6B7>\
+%endif
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS6B8)
+/* SetupRuntimeResources for ToAsyncQueueBlock generated from: '<Root>/Azimuth Motor' */
+%<tlcSetupRuntimeResourcesFcnOfS6B8>\
+%endif
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS6B9)
+/* SetupRuntimeResources for ToAsyncQueueBlock generated from: '<Root>/Constant' */
+%<tlcSetupRuntimeResourcesFcnOfS6B9>\
+%endif
+/* Start for MATLABSystem: '<S3>/Encoder' */
+Tracker_with_Position_Contro_DW.obj.Index = 0U;
+Tracker_with_Position_Contro_DW.obj.matlabCodegenIsDeleted = false;
+Tracker_with_Position_Contro_DW.objisempty_i = true;
+Tracker_with_Position_Contro_DW.obj.isInitialized = 1L;
+MW_EncoderSetup(2UL, 3UL, &Tracker_with_Position_Contro_DW.obj.Index);
+Tracker_with_Position_Contro_DW.obj.isSetupComplete = true;
+Tracker_with_Position_Contro_DW.obj.TunablePropsChanged = false;
+/* Start for MATLABSystem: '<S4>/IN1' */
+Tracker_with_Position_Contro_DW.obj_e.matlabCodegenIsDeleted = false;
+Tracker_with_Position_Contro_DW.objisempty_j = true;
+Tracker_with_Position_Contro_DW.obj_e.isInitialized = 1L;
+digitalIOSetup(7, 1);
+Tracker_with_Position_Contro_DW.obj_e.isSetupComplete = true;
+/* Start for MATLABSystem: '<S4>/IN2' */
+Tracker_with_Position_Contro_DW.obj_d.matlabCodegenIsDeleted = false;
+Tracker_with_Position_Contro_DW.objisempty = true;
+Tracker_with_Position_Contro_DW.obj_d.isInitialized = 1L;
+digitalIOSetup(8, 1);
+Tracker_with_Position_Contro_DW.obj_d.isSetupComplete = true;
+/* Start for MATLABSystem: '<S4>/ENA1' */
+Tracker_with_Position_Contro_DW.obj_g.matlabCodegenIsDeleted = false;
+Tracker_with_Position_Contro_DW.objisempty_a = true;
+Tracker_with_Position_Contro_DW.obj_g.isInitialized = 1L;
+Tracker_with_Position_Contro_DW.obj_g.PWMDriverObj.MW_PWM_HANDLE = MW_PWM_Open(6UL, 0.0, 0.0);
+Tracker_with_Position_Contro_DW.obj_g.isSetupComplete = true;
+%if !WHITE_SPACE(tlcStartFcnOfS6B7)
+/* Start for ToAsyncQueueBlock generated from: '<Root>/Sum' */
+%<tlcStartFcnOfS6B7>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B8)
+/* Start for ToAsyncQueueBlock generated from: '<Root>/Azimuth Motor' */
+%<tlcStartFcnOfS6B8>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B9)
+/* Start for ToAsyncQueueBlock generated from: '<Root>/Constant' */
+%<tlcStartFcnOfS6B9>\
+%endif
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function StartFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Start(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 1, fcnProtoType)>
+%endfunction

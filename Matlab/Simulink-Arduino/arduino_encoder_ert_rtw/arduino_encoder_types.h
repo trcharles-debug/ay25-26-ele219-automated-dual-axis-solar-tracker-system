@@ -4,47 +4,43 @@
  * Code generated for Simulink model 'arduino_encoder'.
  *
  * Model version                  : 1.14
- * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Tue Apr 21 21:51:39 2026
+ * Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+ * C/C++ source code generated on : Wed May  6 01:24:42 2026
  *
  * Target selection: ert.tlc
- * Embedded hardware selection: Atmel->AVR
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_arduino_encoder_types_h_
-#define RTW_HEADER_arduino_encoder_types_h_
+#ifndef arduino_encoder_types_h_
+#define arduino_encoder_types_h_
 #include "rtwtypes.h"
-#ifndef struct_tag_hiATgaifu8RfrjZ2yifYbH
-#define struct_tag_hiATgaifu8RfrjZ2yifYbH
+#ifndef struct_tag_FHZ7JioS7qem7UEAKh2LfE
+#define struct_tag_FHZ7JioS7qem7UEAKh2LfE
 
-struct tag_hiATgaifu8RfrjZ2yifYbH
+struct tag_FHZ7JioS7qem7UEAKh2LfE
 {
   boolean_T matlabCodegenIsDeleted;
   int32_T isInitialized;
   boolean_T isSetupComplete;
   boolean_T TunablePropsChanged;
-  real_T SampleTime;
   uint8_T Index;
 };
 
-#endif                                 /* struct_tag_hiATgaifu8RfrjZ2yifYbH */
+#endif                                 /* struct_tag_FHZ7JioS7qem7UEAKh2LfE */
 
 #ifndef typedef_codertarget_arduinobase_inter_T
 #define typedef_codertarget_arduinobase_inter_T
 
-typedef struct tag_hiATgaifu8RfrjZ2yifYbH codertarget_arduinobase_inter_T;
+typedef struct tag_FHZ7JioS7qem7UEAKh2LfE codertarget_arduinobase_inter_T;
 
 #endif                             /* typedef_codertarget_arduinobase_inter_T */
-
-/* Parameters (default storage) */
-typedef struct P_arduino_encoder_T_ P_arduino_encoder_T;
 
 /* Forward declaration for rtModel */
 typedef struct tag_RTM_arduino_encoder_T RT_MODEL_arduino_encoder_T;
 
-#endif                                 /* RTW_HEADER_arduino_encoder_types_h_ */
+#endif                                 /* arduino_encoder_types_h_ */
 
 /*
  * File trailer for generated code.

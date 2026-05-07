@@ -4,11 +4,11 @@
  * Code generated for Simulink model 'arduino_encoder'.
  *
  * Model version                  : 1.14
- * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Tue Apr 21 21:51:39 2026
+ * Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+ * C/C++ source code generated on : Wed May  6 01:24:42 2026
  *
  * Target selection: ert.tlc
- * Embedded hardware selection: Atmel->AVR
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
  * Code generation objectives: Unspecified
  * Validation result: Not run
  */
@@ -29,21 +29,13 @@ RT_MODEL_arduino_encoder_T *const arduino_encoder_M = &arduino_encoder_M_;
 /* Model step function */
 void arduino_encoder_step(void)
 {
-  /* MATLABSystem: '<S1>/Encoder' */
-  if (arduino_encoder_DW.obj.SampleTime != arduino_encoder_P.Encoder_SampleTime)
-  {
-    arduino_encoder_DW.obj.SampleTime = arduino_encoder_P.Encoder_SampleTime;
-  }
-
+  /* MATLABSystem: '<Root>/Encoder' */
   if (arduino_encoder_DW.obj.TunablePropsChanged) {
     arduino_encoder_DW.obj.TunablePropsChanged = false;
   }
 
-  /* MATLABSystem: '<S1>/Encoder' */
+  /* MATLABSystem: '<Root>/Encoder' */
   MW_EncoderRead(arduino_encoder_DW.obj.Index, &arduino_encoder_B.Encoder);
-
-  {                                    /* Sample time: [0.1s, 0.0s] */
-  }
 
   /* Update absolute time for base rate */
   /* The "clockTick0" counts the number of times the code of this task has
@@ -64,10 +56,10 @@ void arduino_encoder_initialize(void)
   arduino_encoder_M->Timing.stepSize0 = 0.1;
 
   /* External mode info */
-  arduino_encoder_M->Sizes.checksums[0] = (212521990U);
-  arduino_encoder_M->Sizes.checksums[1] = (3490049225U);
-  arduino_encoder_M->Sizes.checksums[2] = (3842824665U);
-  arduino_encoder_M->Sizes.checksums[3] = (4207324794U);
+  arduino_encoder_M->Sizes.checksums[0] = (1048465822U);
+  arduino_encoder_M->Sizes.checksums[1] = (1674068102U);
+  arduino_encoder_M->Sizes.checksums[2] = (401266174U);
+  arduino_encoder_M->Sizes.checksums[3] = (1594542694U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -84,32 +76,31 @@ void arduino_encoder_initialize(void)
     rteiSetTPtr(arduino_encoder_M->extModeInfo, rtmGetTPtr(arduino_encoder_M));
   }
 
-  /* Start for MATLABSystem: '<S1>/Encoder' */
+  /* Start for MATLABSystem: '<Root>/Encoder' */
   arduino_encoder_DW.obj.Index = 0U;
   arduino_encoder_DW.obj.matlabCodegenIsDeleted = false;
-  arduino_encoder_DW.obj.SampleTime = arduino_encoder_P.Encoder_SampleTime;
-  arduino_encoder_DW.obj.isInitialized = 1L;
-  MW_EncoderSetup(2UL, 3UL, &arduino_encoder_DW.obj.Index);
+  arduino_encoder_DW.obj.isInitialized = 1;
+  MW_EncoderSetup(5U, 4U, &arduino_encoder_DW.obj.Index);
   arduino_encoder_DW.obj.isSetupComplete = true;
   arduino_encoder_DW.obj.TunablePropsChanged = false;
 
-  /* InitializeConditions for MATLABSystem: '<S1>/Encoder' */
+  /* InitializeConditions for MATLABSystem: '<Root>/Encoder' */
   MW_EncoderReset(arduino_encoder_DW.obj.Index);
 }
 
 /* Model terminate function */
 void arduino_encoder_terminate(void)
 {
-  /* Terminate for MATLABSystem: '<S1>/Encoder' */
+  /* Terminate for MATLABSystem: '<Root>/Encoder' */
   if (!arduino_encoder_DW.obj.matlabCodegenIsDeleted) {
     arduino_encoder_DW.obj.matlabCodegenIsDeleted = true;
-    if ((arduino_encoder_DW.obj.isInitialized == 1L) &&
+    if ((arduino_encoder_DW.obj.isInitialized == 1) &&
         arduino_encoder_DW.obj.isSetupComplete) {
       MW_EncoderRelease();
     }
   }
 
-  /* End of Terminate for MATLABSystem: '<S1>/Encoder' */
+  /* End of Terminate for MATLABSystem: '<Root>/Encoder' */
 }
 
 /*

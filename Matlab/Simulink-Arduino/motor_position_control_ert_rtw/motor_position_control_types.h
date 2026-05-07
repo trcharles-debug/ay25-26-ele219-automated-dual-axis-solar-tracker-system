@@ -3,9 +3,9 @@
  *
  * Code generation for model "motor_position_control".
  *
- * Model version              : 1.118
- * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Wed Apr 22 10:53:50 2026
+ * Model version              : 1.119
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C source code generated on : Sun May  3 23:07:59 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -14,92 +14,91 @@
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_motor_position_control_types_h_
-#define RTW_HEADER_motor_position_control_types_h_
+#ifndef motor_position_control_types_h_
+#define motor_position_control_types_h_
 #include "rtwtypes.h"
 #include "MW_SVD.h"
-#ifndef struct_tag_hiATgaifu8RfrjZ2yifYbH
-#define struct_tag_hiATgaifu8RfrjZ2yifYbH
+#ifndef struct_tag_FHZ7JioS7qem7UEAKh2LfE
+#define struct_tag_FHZ7JioS7qem7UEAKh2LfE
 
-struct tag_hiATgaifu8RfrjZ2yifYbH
+struct tag_FHZ7JioS7qem7UEAKh2LfE
 {
   boolean_T matlabCodegenIsDeleted;
   int32_T isInitialized;
   boolean_T isSetupComplete;
   boolean_T TunablePropsChanged;
-  real_T SampleTime;
   uint8_T Index;
 };
 
-#endif                                 /* struct_tag_hiATgaifu8RfrjZ2yifYbH */
+#endif                                 /* struct_tag_FHZ7JioS7qem7UEAKh2LfE */
 
 #ifndef typedef_codertarget_arduinobase_inter_T
 #define typedef_codertarget_arduinobase_inter_T
 
-typedef struct tag_hiATgaifu8RfrjZ2yifYbH codertarget_arduinobase_inter_T;
+typedef struct tag_FHZ7JioS7qem7UEAKh2LfE codertarget_arduinobase_inter_T;
 
 #endif                             /* typedef_codertarget_arduinobase_inter_T */
 
 /* Custom Type definition for MATLABSystem: '<S4>/ENA1' */
 #include "MW_SVD.h"
-#ifndef struct_tag_g1WX34VPn8QzVKQriB4HN
-#define struct_tag_g1WX34VPn8QzVKQriB4HN
+#ifndef struct_tag_7VFuPw0vSNrn5pRgG8Mc4C
+#define struct_tag_7VFuPw0vSNrn5pRgG8Mc4C
 
-struct tag_g1WX34VPn8QzVKQriB4HN
+struct tag_7VFuPw0vSNrn5pRgG8Mc4C
 {
   MW_Handle_Type MW_PWM_HANDLE;
 };
 
-#endif                                 /* struct_tag_g1WX34VPn8QzVKQriB4HN */
+#endif                                 /* struct_tag_7VFuPw0vSNrn5pRgG8Mc4C */
 
-#ifndef typedef_h_matlabshared_ioclient_perip_T
-#define typedef_h_matlabshared_ioclient_perip_T
+#ifndef typedef_e_matlabshared_ioclient_perip_T
+#define typedef_e_matlabshared_ioclient_perip_T
 
-typedef struct tag_g1WX34VPn8QzVKQriB4HN h_matlabshared_ioclient_perip_T;
+typedef struct tag_7VFuPw0vSNrn5pRgG8Mc4C e_matlabshared_ioclient_perip_T;
 
-#endif                             /* typedef_h_matlabshared_ioclient_perip_T */
+#endif                             /* typedef_e_matlabshared_ioclient_perip_T */
 
-#ifndef struct_tag_4eDVzK5FiryyCjvjjvrZGB
-#define struct_tag_4eDVzK5FiryyCjvjjvrZGB
+#ifndef struct_tag_RWocY1aAVmuibq0rYX5t0G
+#define struct_tag_RWocY1aAVmuibq0rYX5t0G
 
-struct tag_4eDVzK5FiryyCjvjjvrZGB
+struct tag_RWocY1aAVmuibq0rYX5t0G
 {
   boolean_T matlabCodegenIsDeleted;
   int32_T isInitialized;
   boolean_T isSetupComplete;
-  h_matlabshared_ioclient_perip_T PWMDriverObj;
+  e_matlabshared_ioclient_perip_T PWMDriverObj;
 };
 
-#endif                                 /* struct_tag_4eDVzK5FiryyCjvjjvrZGB */
+#endif                                 /* struct_tag_RWocY1aAVmuibq0rYX5t0G */
 
 #ifndef typedef_codertarget_arduinobase_int_e_T
 #define typedef_codertarget_arduinobase_int_e_T
 
-typedef struct tag_4eDVzK5FiryyCjvjjvrZGB codertarget_arduinobase_int_e_T;
+typedef struct tag_RWocY1aAVmuibq0rYX5t0G codertarget_arduinobase_int_e_T;
 
 #endif                             /* typedef_codertarget_arduinobase_int_e_T */
 
-#ifndef struct_tag_04b6x6tDldj9IrIH2gmbjG
-#define struct_tag_04b6x6tDldj9IrIH2gmbjG
+#ifndef struct_tag_bpMNyLZPCJBeBnOB7xlwFB
+#define struct_tag_bpMNyLZPCJBeBnOB7xlwFB
 
-struct tag_04b6x6tDldj9IrIH2gmbjG
+struct tag_bpMNyLZPCJBeBnOB7xlwFB
 {
   int16_T __dummy;
 };
 
-#endif                                 /* struct_tag_04b6x6tDldj9IrIH2gmbjG */
+#endif                                 /* struct_tag_bpMNyLZPCJBeBnOB7xlwFB */
 
 #ifndef typedef_b_arduinodriver_ArduinoDigita_T
 #define typedef_b_arduinodriver_ArduinoDigita_T
 
-typedef struct tag_04b6x6tDldj9IrIH2gmbjG b_arduinodriver_ArduinoDigita_T;
+typedef struct tag_bpMNyLZPCJBeBnOB7xlwFB b_arduinodriver_ArduinoDigita_T;
 
 #endif                             /* typedef_b_arduinodriver_ArduinoDigita_T */
 
-#ifndef struct_tag_AYWgtFscQm3mLUJYb3A20C
-#define struct_tag_AYWgtFscQm3mLUJYb3A20C
+#ifndef struct_tag_ldqgYDWP5Rq6U8J4ptL7cG
+#define struct_tag_ldqgYDWP5Rq6U8J4ptL7cG
 
-struct tag_AYWgtFscQm3mLUJYb3A20C
+struct tag_ldqgYDWP5Rq6U8J4ptL7cG
 {
   boolean_T matlabCodegenIsDeleted;
   int32_T isInitialized;
@@ -107,12 +106,12 @@ struct tag_AYWgtFscQm3mLUJYb3A20C
   b_arduinodriver_ArduinoDigita_T DigitalIODriverObj;
 };
 
-#endif                                 /* struct_tag_AYWgtFscQm3mLUJYb3A20C */
+#endif                                 /* struct_tag_ldqgYDWP5Rq6U8J4ptL7cG */
 
 #ifndef typedef_codertarget_arduinobase_block_T
 #define typedef_codertarget_arduinobase_block_T
 
-typedef struct tag_AYWgtFscQm3mLUJYb3A20C codertarget_arduinobase_block_T;
+typedef struct tag_ldqgYDWP5Rq6U8J4ptL7cG codertarget_arduinobase_block_T;
 
 #endif                             /* typedef_codertarget_arduinobase_block_T */
 
@@ -122,4 +121,4 @@ typedef struct P_motor_position_control_T_ P_motor_position_control_T;
 /* Forward declaration for rtModel */
 typedef struct tag_RTM_motor_position_contro_T RT_MODEL_motor_position_contr_T;
 
-#endif                          /* RTW_HEADER_motor_position_control_types_h_ */
+#endif                                 /* motor_position_control_types_h_ */
